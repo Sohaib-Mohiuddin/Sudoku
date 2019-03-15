@@ -126,6 +126,7 @@ public class Play extends JFrame {
         frame.getContentPane().add(panel1);
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
 
