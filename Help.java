@@ -38,6 +38,9 @@ public class Help extends JFrame {
         pageTitle.setFont(new Font("Comic Sans", Font.BOLD, 30));
         pageTitle.setBounds(400, 100, 400, 40);
 
+        test = new JLabel();
+        test.setBounds(300,100,1000,500);
+
         //description.setBounds(100, 120, 1000, 100);
 
 
@@ -56,26 +59,25 @@ public class Help extends JFrame {
         frame.add(test);
 
 
-        //frame.setLocationRelativeTo(null);
-        //frame.setVisible(true);
-        //frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        frame.pack();
 
     }
 
 
 
     public void readfile() {
-        String line;
+        String line = null;
         File file = new File("help.txt");
-        test = new JLabel();
-        test.setBounds(300,100,1000,500);
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(file));
+        
+        try(BufferedReader in = new BufferedReader(new FileReader(file))) {
+            
             while ((line = in.readLine()) != null) {
-                line = in.readLine();
+                //line = in.readLine();
                 test.setText(line);
                 test.setText(test.getText()+line);
-
+                line = in.readLine();
             }
             in.close();
         } catch (IOException ex) {
