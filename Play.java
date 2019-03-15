@@ -62,7 +62,7 @@ public class Play extends JFrame {
         panel1.setBackground(Color.GRAY);
         panel1.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
         panel1.setBounds(0, 0, CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
-        panel1.setBorder(BorderFactory.createLineBorder(Color.black));
+        panel1.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         Action action = new AbstractAction() {
             @Override
@@ -92,6 +92,17 @@ public class Play extends JFrame {
                 cells[i][j] = new JTextField();
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 cells[i][j].addActionListener(action);
+
+                if (i % 3 == 0 && i != 0){
+					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
+				}
+				if (j % 3 == 0 && j != 0){
+					cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 4, 1, 1, Color.black));
+				}
+				if (i % 3 == 0 && j % 3 == 0 && j != 0 && i != 0){
+					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 4, 1, 1, Color.black));
+                }
+                
                 panel1.add(cells[i][j]);
 
                 if (mask[i][j]) {
@@ -113,6 +124,8 @@ public class Play extends JFrame {
         }
 
         frame.getContentPane().add(panel1);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
     }
 
 
