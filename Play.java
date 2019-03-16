@@ -22,8 +22,8 @@ public class Play extends JFrame {
     public static final Color CLICKED_BOX = Color.CYAN;
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
 
-    public int previousRowPicked;
-    public int previousColPicked;
+    private int previousRowPicked;
+    private int previousColPicked;
     boolean[][] hidden;
 
     gameGenerator newPuzzle = new gameGenerator();
@@ -67,19 +67,29 @@ public class Play extends JFrame {
                         if (cells[row][col] == source) {
                             rowPicked = row;
                             colPicked = col;
-                            
-                            //cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                             found = true;  //Leaves the loop when found
                         }
+                    }
+                }
+
+                if (previousRowPicked != -1 && previousColPicked != -1) {
+                    if(mask[previousRowPicked][previousColPicked]) {
+                        cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
+                    } else {
+                        cells[previousRowPicked][previousColPicked].setBackground(CLICKED_BOX);
                     }
                 }
 
                 int user_input = Integer.parseInt(cells[rowPicked][colPicked].getText());
                 if (user_input == puzzle[rowPicked][colPicked]) {
                     cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
+                    cells[rowPicked][colPicked].setEditable(false);
                 } else {
                     cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
                 }
+
+                previousRowPicked = rowPicked;
+                previousColPicked = colPicked;
             }
         };
 
