@@ -24,25 +24,28 @@ public class Play extends JFrame {
     public int previousColPicked;
     boolean[][] hidden;
 
+    gameGenerator newPuzzle = new gameGenerator();
+	private int[][] puzzle = newPuzzle.getPuzzle();
 
-    private int[][] puzzle = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0},
-                              {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-    private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
-                                {false, false, false, false, false, false, false, false, true},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false}};
+
+    // private int[][] puzzle = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    // private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, true},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false}};
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     JPanel cell_panels = new JPanel();
@@ -115,9 +118,7 @@ public class Play extends JFrame {
                     //cells[i][j].setText(randomnum + "");
                     for (int x = 0; x < GRID_SIZE; x++) {
                         for (int y = 0; y < GRID_SIZE; y++) {
-                            Random rand = new Random();
-                            int randomnum = rand.nextInt(9)+1;
-                            cells[i][j].setText(randomnum + "");
+                            cells[i][j].setText(puzzle[i][j] + "");
                         }
                     }
                     cells[i][j].setEditable(false);
@@ -137,9 +138,15 @@ public class Play extends JFrame {
         frame.setLocationRelativeTo(null);
     }
 
+    // public int numGenerator() {
+    //     Random rand = new Random();
+    //     int randomnum = rand.nextInt(9)+1;
+    //     return randomnum;
+    // }
 
     public static void main(String[] args) {
         Play play = new Play();
+
         play.GUI();
     }
 }
