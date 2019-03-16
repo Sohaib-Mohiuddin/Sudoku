@@ -34,9 +34,8 @@ public class Play extends JFrame {
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     JPanel cell_panels = new JPanel();
 
-    public Play() {
-
-    }
+    // public Play() {
+    // }
 
     public void GUI() {
         frame = new JFrame();
@@ -74,9 +73,9 @@ public class Play extends JFrame {
 
                 if (previousRowPicked != -1 && previousColPicked != -1) {
                     if(mask[previousRowPicked][previousColPicked]) {
-                        cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
-                    } else {
                         cells[previousRowPicked][previousColPicked].setBackground(CLICKED_BOX);
+                    } else {
+                        cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
                     }
                 }
 
