@@ -37,15 +37,15 @@ public class Play extends JFrame {
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-    // private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, true},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false}};
+    private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
+                                {false, false, false, false, false, false, false, false, true},
+                                {false, false, true, false, false, false, false, false, false},
+                                {false, false, false, false, false, false, false, false, false},
+                                {false, false, false, true, false, true, false, false, false},
+                                {false, false, false, false, true, false, false, false, false},
+                                {false, false, false, false, false, false, false, false, false},
+                                {false, true, false, false, false, false, false, false, false},
+                                {false, false, false, false, false, false, false, false, false}};
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     JPanel cell_panels = new JPanel();
@@ -137,12 +137,6 @@ public class Play extends JFrame {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-
-    // public int numGenerator() {
-    //     Random rand = new Random();
-    //     int randomnum = rand.nextInt(9)+1;
-    //     return randomnum;
-    // }
 
     public static void main(String[] args) {
         Play play = new Play();

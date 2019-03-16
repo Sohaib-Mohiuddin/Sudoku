@@ -14,3 +14,13 @@
         - set colours of right and wrong (TODO)
     - create difficulties (TODO)
     - generate random boards (TODO)
+
+    - Unit Tests (TODO)
+        - Enter number
+        - Put Multiple numbers
+        - Hints
+        - Deleting number
+        - number validation for row/column
+        - number validation for subgrid
+        - Random number generation
+
