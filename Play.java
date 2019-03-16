@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Random;
 
 public class Play extends JFrame {
 
@@ -22,6 +23,7 @@ public class Play extends JFrame {
     public int previousRowPicked;
     public int previousColPicked;
     boolean[][] hidden;
+
 
     private int[][] puzzle = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
                               {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -110,7 +112,14 @@ public class Play extends JFrame {
                     cells[i][j].setBackground(Color.white);
                     // Add ActionEvent listener to process the input
                  } else {
-                    cells[i][j].setText(puzzle[i][j] + "");
+                    //cells[i][j].setText(randomnum + "");
+                    for (int x = 0; x < GRID_SIZE; x++) {
+                        for (int y = 0; y < GRID_SIZE; y++) {
+                            Random rand = new Random();
+                            int randomnum = rand.nextInt(9)+1;
+                            cells[i][j].setText(randomnum + "");
+                        }
+                    }
                     cells[i][j].setEditable(false);
                     cells[i][j].setBackground(Color.GRAY);
                     cells[i][j].setForeground(Color.GREEN);
