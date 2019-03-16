@@ -51,9 +51,8 @@ public class Play extends JFrame {
 
     public void GUI() {
         frame = new JFrame();
-        frame.setSize(CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
+        frame.setSize(CELL_SIZE*GRID_SIZE+150, CELL_SIZE*GRID_SIZE+150);
         frame.setTitle("Play");
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
@@ -124,7 +123,8 @@ public class Play extends JFrame {
         }
 
         frame.getContentPane().add(panel1);
-        
+
+        frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
