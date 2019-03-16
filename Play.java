@@ -18,7 +18,9 @@ public class Play extends JFrame {
 
     public static final Color RIGHT_ANSWER = Color.GREEN;
     public static final Color WRONG_ANSWER = Color.RED;
-    public static final Font FONT_NUMBERS = new Font("Monospaced", Font.BOLD, 20);
+    public static final Color UNCLICKED_BOX = Color.white;
+    public static final Color CLICKED_BOX = Color.CYAN;
+    public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public int previousRowPicked;
     public int previousColPicked;
@@ -37,15 +39,17 @@ public class Play extends JFrame {
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
     //                           {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-    private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
-                                {false, false, false, false, false, false, false, false, true},
-                                {false, false, true, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, false, false, true, false, true, false, false, false},
-                                {false, false, false, false, true, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false},
-                                {false, true, false, false, false, false, false, false, false},
-                                {false, false, false, false, false, false, false, false, false}};
+    // private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, true},
+    //                             {false, false, true, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, false, false, true, false, true, false, false, false},
+    //                             {false, false, false, false, true, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false},
+    //                             {false, true, false, false, false, false, false, false, false},
+    //                             {false, false, false, false, false, false, false, false, false}};
+
+    private boolean[][] mask = maskGenerator();
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     JPanel cell_panels = new JPanel();
@@ -63,7 +67,7 @@ public class Play extends JFrame {
         frame.getContentPane().setBackground(Color.cyan);
 
         panel1 = new JPanel();
-        panel1.setBackground(Color.GRAY);
+        panel1.setBackground(Color.PINK);
         panel1.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
         panel1.setBounds(0, 0, CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
         panel1.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
@@ -85,6 +89,9 @@ public class Play extends JFrame {
                             colPicked = col;
                             cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                             found = true;  //Leaves the loop when found
+                            if () {
+                                
+                            }
                         }
                     }
                 }
@@ -93,6 +100,7 @@ public class Play extends JFrame {
 
         for (int i = 0; i < GRID_SIZE; ++i) {
             for (int j = 0; j < GRID_SIZE; ++j) {
+
                 cells[i][j] = new JTextField();
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 cells[i][j].addActionListener(action);
@@ -113,17 +121,18 @@ public class Play extends JFrame {
                     cells[i][j].setText("");
                     cells[i][j].setEditable(true);
                     cells[i][j].setBackground(Color.white);
-                    // Add ActionEvent listener to process the input
+                    cells[i][j].setForeground(new Color(0, 0, 153));
+                    
                  } else {
-                    //cells[i][j].setText(randomnum + "");
+                    
                     for (int x = 0; x < GRID_SIZE; x++) {
                         for (int y = 0; y < GRID_SIZE; y++) {
                             cells[i][j].setText(puzzle[i][j] + "");
                         }
                     }
                     cells[i][j].setEditable(false);
-                    cells[i][j].setBackground(Color.GRAY);
-                    cells[i][j].setForeground(Color.GREEN);
+                    cells[i][j].setBackground(Color.LIGHT_GRAY);
+                    cells[i][j].setForeground(new Color(0, 0, 153));
                  }
 
                  // Beautify all the cells
@@ -136,6 +145,24 @@ public class Play extends JFrame {
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
+    }
+
+    public boolean[][] maskGenerator() {
+        Random random = new Random();
+        
+        boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
+
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                int randomnum = random.nextInt(4) + 1;
+                if (randomnum <= 3) {
+                    cover[i][j] = true;
+                } else {
+                    cover[i][j] = false;
+                }
+            }
+        }
+        return cover;
     }
 
     public static void main(String[] args) {
