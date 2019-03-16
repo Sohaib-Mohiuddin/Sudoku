@@ -29,26 +29,6 @@ public class Play extends JFrame {
     gameGenerator newPuzzle = new gameGenerator();
 	private int[][] puzzle = newPuzzle.getPuzzle();
 
-
-    // private int[][] puzzle = {{0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0},
-    //                           {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-    // private boolean[][] mask = {{false, false, false, false, false, true, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, true},
-    //                             {false, false, true, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, false, false, true, false, true, false, false, false},
-    //                             {false, false, false, false, true, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false},
-    //                             {false, true, false, false, false, false, false, false, false},
-    //                             {false, false, false, false, false, false, false, false, false}};
-
     private boolean[][] mask = maskGenerator();
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
@@ -87,13 +67,18 @@ public class Play extends JFrame {
                         if (cells[row][col] == source) {
                             rowPicked = row;
                             colPicked = col;
-                            cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
+                            
+                            //cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                             found = true;  //Leaves the loop when found
-                            if () {
-                                
-                            }
                         }
                     }
+                }
+
+                int user_input = Integer.parseInt(cells[rowPicked][colPicked].getText());
+                if (user_input == puzzle[rowPicked][colPicked]) {
+                    cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
+                } else {
+                    cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
                 }
             }
         };
