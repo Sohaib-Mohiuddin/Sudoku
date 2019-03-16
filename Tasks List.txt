@@ -1,0 +1,26 @@
+- frame (IN PROGRESS)
+    - grid layout null (DONE)
+    - create menubar (TODO)
+
+-panel (IN PROGRESS)
+    - grid layout (DONE)
+    - create borders (DONE)
+    - create subgrid (DONE)
+    - textfields (IN PROGRESS)
+        - create borders (DONE)
+        - populate fields (TODO)
+    - actionlisteners (TODO)
+        - check #'s (TODO)
+        - set colours of right and wrong (TODO)
+    - create difficulties (TODO)
+    - generate random boards (TODO)
+
+    - Unit Tests (TODO)
+        - Enter number
+        - Put Multiple numbers
+        - Hints
+        - Deleting number
+        - number validation for row/column
+        - number validation for subgrid
+        - Random number generation
+
