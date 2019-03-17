@@ -18,7 +18,7 @@ public class Homepage extends JFrame{
 
     public void Gui() {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1000, 1000));
+        frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Sudoku");

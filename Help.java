@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.util.Scanner;
+//import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 
@@ -22,17 +22,17 @@ public class Help extends JFrame {
     public void Gui() {
 
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1000, 1000));
-        frame.setLocationRelativeTo(null);
+        frame.setPreferredSize(new Dimension(1500, 1000));
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Help");
-        frame.setVisible(true);
+        
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
 
         returnButton = new JButton("Return");
         returnButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
-        returnButton.setBounds(833, 920, 150, 40);
+        returnButton.setBounds(1250, 860, 200, 50);
 
         pageTitle = new JLabel("How to Play");
         pageTitle.setFont(new Font("Comic Sans", Font.BOLD, 30));
@@ -40,11 +40,6 @@ public class Help extends JFrame {
 
         test = new JLabel();
         test.setBounds(300,100,1000,500);
-
-        //description.setBounds(100, 120, 1000, 100);
-
-
-
 
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,18 +52,16 @@ public class Help extends JFrame {
         frame.add(returnButton);
         frame.add(pageTitle);
         frame.add(test);
-
-
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+ 
         frame.pack();
-
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 
 
 
     public void readfile() {
-        String line = null;
+        String line;
         File file = new File("help.txt");
         
         try(BufferedReader in = new BufferedReader(new FileReader(file))) {

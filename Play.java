@@ -18,7 +18,7 @@ public class Play extends JFrame {
     public JLabel title_play, label2;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
-    public JMenuItem save, item_options;
+    public JMenuItem save, item_options, item_quit;
 
     public static final int GRID_SIZE = 9;
     public static final int SUBGRID_SIZE = 3;
@@ -61,10 +61,20 @@ public class Play extends JFrame {
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
         item_options = new JMenuItem("Options");
+        item_quit = new JMenuItem("Quit");
+        
+        item_quit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
         save = new JMenuItem("Save");
-        menu_file.add(save);
+        menu_file.add(save); menu_file.add(item_options); menu_file.add(item_quit);
         menubar.add(menu_file);
-        menubar.add(item_options);
 
         title_play = new JLabel("Sudoku-sama");
         title_play.setBounds(610, 100, 340, 70);

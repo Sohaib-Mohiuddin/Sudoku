@@ -18,11 +18,11 @@ public class Options extends JFrame{
 
     public void Gui() {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1000, 1000));
-        frame.setLocationRelativeTo(null);
+        frame.setPreferredSize(new Dimension(1500, 1000));
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Options");
-        frame.setVisible(true);
+        
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.CYAN);
 
@@ -43,7 +43,7 @@ public class Options extends JFrame{
         Beginner.setBounds(70, 300, 160, 40);
         Intermediate.setBounds(70, 360, 160, 40);
         Expert.setBounds(70, 420, 160, 40);
-        Return.setBounds(833,920,160,40);
+        Return.setBounds(1250, 860, 200, 50);
         soundButton.setBounds(700, 300, 160, 40);
 
         Return.addActionListener(new ActionListener()
