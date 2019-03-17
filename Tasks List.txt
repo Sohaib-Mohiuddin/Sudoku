@@ -17,6 +17,9 @@
     - generate random masks for board (TODO)(DONE)
     - Set colours for right or wrong answer (TODO)
     - set colours for touched and untouched textfields (TODO)
+    - fix closed/open box colours (TODO)
+    - fix remove number if wrong (TODO)
+    - Add actionlisteners to hint for on and off (TODO)
 
     - Unit Tests (TODO)
         - Enter number
