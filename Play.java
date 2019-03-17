@@ -1,14 +1,16 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.*; import java.awt.event.*;
+import java.awt.font.TextAttribute;
+
 import javax.swing.*;
-import java.util.Random;
+import java.util.Random; import java.util.Map; import java.util.HashMap;
 
 public class Play extends JFrame {
 
     public JFrame frame;
     public JPanel panel1, panel2;
-    public JButton button1, button2, button3;
-    public JLabel label1, label2;
+    public JButton Options, Save, Return;
+    public JToggleButton Hint;
+    public JLabel title_play, label2;
     public JMenu menu, submenu;
     public JMenuItem i1, i2, i3, i4, i5;
 
@@ -21,6 +23,7 @@ public class Play extends JFrame {
     public static final Color UNCLICKED_BOX = Color.white;
     public static final Color CLICKED_BOX = Color.CYAN;
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
+    public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
     private int previousRowPicked;
     private int previousColPicked;
@@ -39,16 +42,23 @@ public class Play extends JFrame {
 
     public void GUI() {
         frame = new JFrame();
-        frame.setSize(CELL_SIZE*GRID_SIZE+150, CELL_SIZE*GRID_SIZE+150);
+        frame.setSize(1500, 1000);
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
 
+        title_play = new JLabel("Sudoku-sama");
+        title_play.setBounds(610, 100, 340, 70);
+        title_play.setFont(TITLE_FONTS);
+        Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        title_play.setFont(TITLE_FONTS.deriveFont(attributes));
+
         panel1 = new JPanel();
         panel1.setBackground(Color.PINK);
         panel1.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
-        panel1.setBounds(0, 0, CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
+        panel1.setBounds(430, 180, CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
         panel1.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         Action action = new AbstractAction() {
@@ -135,6 +145,7 @@ public class Play extends JFrame {
             }
         }
 
+        frame.getContentPane().add(title_play);
         frame.getContentPane().add(panel1);
 
         frame.setVisible(true);
