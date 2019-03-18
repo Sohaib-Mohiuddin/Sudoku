@@ -7,7 +7,8 @@ public class Login extends JFrame {
     public JFrame frame;
     public JButton login, clear;
     public JLabel title, username, password;
-    public JTextField username_input, password_input;
+    public JTextField username_input;
+    public JPasswordField password_input;
     public JMenuBar menubar;
     public JMenu menu_file;
     public JMenuItem item_quit;
@@ -15,12 +16,8 @@ public class Login extends JFrame {
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
-    public static final String LOGIN1 = "admin";
-    public static final String PASSWORD1 = "principles";
-    public static final String LOGIN2 = "sohaib";
-    public static final String PASSWORD2 = "software";
-    public static final String LOGIN3 = "umar";
-    public static final String PASSWORD3 = "requirements";
+    public static final String LOGIN1 = "admin", PASSWORD1 = "principles", LOGIN2 = "sohaib", PASSWORD2 = "software", LOGIN3 = "umar", 
+                                PASSWORD3 = "requirements";
 
     public Login() {
         Gui();
@@ -38,6 +35,16 @@ public class Login extends JFrame {
         menu_file = new JMenu("File");
         item_quit = new JMenuItem("Quit");
 
+        item_quit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
+
         menu_file.add(item_quit);
         menubar.add(menu_file);
 
@@ -49,7 +56,7 @@ public class Login extends JFrame {
         password.setFont(FONT_BUTTONS);
 
         username_input = new JTextField();
-        password_input = new JTextField();
+        password_input = new JPasswordField();
         username_input.setBounds(350, 200, 200, 40);
         password_input.setBounds(350, 270, 200, 40);
         username_input.setFont(FONT_BUTTONS);
@@ -65,7 +72,8 @@ public class Login extends JFrame {
         login.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
                String usernameValue = username_input.getText();
-               String passwordValue = password_input.getText();
+               char[] c = password_input.getPassword();
+               String passwordValue = new String(c);
 
                if ((usernameValue.equals(LOGIN1) && passwordValue.equals(PASSWORD1)) || (usernameValue.equals(LOGIN2) && 
                passwordValue.equals(PASSWORD2)) || (usernameValue.equals(LOGIN3) && passwordValue.equals(PASSWORD3))) {

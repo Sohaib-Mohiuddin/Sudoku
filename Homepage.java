@@ -8,11 +8,11 @@ import java.awt.event.*;
 public class Homepage extends JFrame{
 
     public JFrame frame;
-    public JButton play, options, help, quit;
+    public JButton play, options, help, quit, logout;
     public JLabel title, label2;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
-    public JMenuItem save, item_options, item_quit;
+    public JMenuItem item_options, item_quit, item_logout;
 
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
@@ -31,6 +31,7 @@ public class Homepage extends JFrame{
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
         item_quit = new JMenuItem("Quit");
+        item_logout = new JMenuItem("Logout");
         
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -41,24 +42,37 @@ public class Homepage extends JFrame{
                 }
             }
         });
+        item_logout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    Login login = new Login();
+                    frame.setVisible(false);
+                }
+            }
+        });
 
-        menu_file.add(item_quit);
+        menu_file.add(item_quit); menu_file.add(item_logout);
         menubar.add(menu_file);
 
         play = new JButton("Play");
         options = new JButton("Options");
         help = new JButton("Help");
         quit = new JButton("Quit");
+        logout = new JButton("Logout");
 
         play.setBounds(560, 420, 200, 50);
         options.setBounds(560, 480, 200, 50);
         help.setBounds(770, 420, 200, 50);
         quit.setBounds(770, 480, 200, 50);
+        logout.setBounds(1250, 860, 200, 50);
 
         play.setFont(FONT_BUTTONS);
         options.setFont(FONT_BUTTONS);
         help.setFont(FONT_BUTTONS);
         quit.setFont(FONT_BUTTONS);
+        logout.setFont(FONT_BUTTONS);
 
         title = new JLabel("Welcome to Sudoku-sama");
         title.setFont(new Font("Comic Sans", Font.BOLD, 30));
@@ -99,12 +113,24 @@ public class Homepage extends JFrame{
                 frame.setVisible(false);
             }
         });
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    Login login = new Login();
+                    frame.setVisible(false);
+                }
+            }
+        });
 
         frame.setJMenuBar(menubar);
         frame.add(play);
         frame.add(options);
         frame.add(help);
         frame.add(quit);
+        frame.add(logout);
         frame.add(title);
         frame.add(label2);
 
