@@ -32,6 +32,10 @@ public class Help extends JFrame {
         menu_file = new JMenu("File");
         item_home = new JMenuItem("Home");
         item_quit = new JMenuItem("Quit");
+        menu_file.setFont(FONT_HELP);
+        item_home.setFont(FONT_HELP);
+        item_quit.setFont(FONT_HELP);
+
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);

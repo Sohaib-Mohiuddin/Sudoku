@@ -16,6 +16,7 @@ public class Options extends JFrame{
     public JMenuItem item_home, item_quit;
 
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
+    public static final Font MENU_FONTS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public Options() {
         Gui();
@@ -35,6 +36,9 @@ public class Options extends JFrame{
         menu_file = new JMenu("File");
         item_home = new JMenuItem("Home");
         item_quit = new JMenuItem("Quit");
+        menu_file.setFont(MENU_FONTS);
+        item_home.setFont(MENU_FONTS);
+        item_quit.setFont(MENU_FONTS);
         
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {

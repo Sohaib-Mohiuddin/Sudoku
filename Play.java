@@ -65,6 +65,9 @@ public class Play extends JFrame {
         menu_file = new JMenu("File");
         item_options = new JMenuItem("Options");
         item_quit = new JMenuItem("Quit");
+        menu_file.setFont(FONT_NUMBERS);
+        item_options.setFont(FONT_NUMBERS);
+        item_quit.setFont(FONT_NUMBERS);
         
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -76,6 +79,7 @@ public class Play extends JFrame {
             }
         });
         save = new JMenuItem("Save");
+        save.setFont(FONT_NUMBERS);
         menu_file.add(save); menu_file.add(item_options); menu_file.add(item_quit);
         menubar.add(menu_file);
 

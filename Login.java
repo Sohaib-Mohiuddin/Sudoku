@@ -34,6 +34,8 @@ public class Login extends JFrame {
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
         item_quit = new JMenuItem("Quit");
+        menu_file.setFont(FONT_BUTTONS);
+        item_quit.setFont(FONT_BUTTONS);
 
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
