@@ -70,6 +70,8 @@ public class Login extends JFrame {
                if ((usernameValue.equals(LOGIN1) && passwordValue.equals(PASSWORD1)) || (usernameValue.equals(LOGIN2) && 
                passwordValue.equals(PASSWORD2)) || (usernameValue.equals(LOGIN3) && passwordValue.equals(PASSWORD3))) {
                     JOptionPane.showMessageDialog(null, "You did it");
+                    Homepage homepage = new Homepage();
+                    frame.setVisible(false);
                } else {
                     JOptionPane.showMessageDialog(null, "Try again");
                }
