@@ -1,3 +1,5 @@
+
+
 import java.lang.*;
 
 public class gameGenerator {

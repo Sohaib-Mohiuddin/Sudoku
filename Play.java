@@ -1,3 +1,5 @@
+
+
 import java.awt.*; import java.awt.event.*;
 import java.awt.font.TextAttribute;
 
@@ -47,8 +49,9 @@ public class Play extends JFrame {
 
     //final String propertyName = "text";
 
-    // public Play() {
-    // }
+    public Play() {
+        GUI();
+    }
 
     public void GUI() {
         frame = new JFrame();
@@ -284,8 +287,8 @@ public class Play extends JFrame {
     }
 
     public static void main(String[] args) {
-        Play play = new Play();
-        play.GUI();
+        new Play();
+        
     }
 
     public static class ValueExportTransferHandler extends TransferHandler {

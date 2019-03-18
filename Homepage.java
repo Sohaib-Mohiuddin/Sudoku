@@ -1,3 +1,5 @@
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,7 +8,6 @@ import java.awt.event.*;
 public class Homepage extends JFrame{
 
     public JFrame frame;
-
     public JButton play, options, help, quit;
     public JLabel title, label2;
     public JMenuBar menubar;
@@ -22,10 +23,8 @@ public class Homepage extends JFrame{
     public void Gui() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
-        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Sudoku");
-        frame.setVisible(true);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
 
