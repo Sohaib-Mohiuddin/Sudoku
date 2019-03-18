@@ -93,10 +93,30 @@ public class Play extends JFrame {
         return_button = new JButton("Return to Main Menu");
         return_button.setFont(BUTTON_FONTS);
         return_button.setBounds(1250, 860, 200, 50);
+        return_button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    new Homepage();
+                    frame.setVisible(false);
+                }
+            }
+        });
 
         help = new JButton("Help");
         help.setFont(BUTTON_FONTS);
         help.setBounds(115, 450, 200, 50);
+        help.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                JOptionPane.showMessageDialog(null, "To play, you first pick a blue box and enter the number you think it is, \n" + 
+                                                    "then you press enter and see if you are correct. If the box turns green \n" + 
+                                                    "you are correct, if it is red then you are incorrect. The objective \n" + 
+                                                    "of Sudoku is to fill up the boxes with a number between 1-9 that \n" + 
+                                                    "doesn't repeat in the rows, columns, or subgrids. To return to the menu \n" + 
+                                                    "while playing, press the esc button.");
+            }
+        });
 
         hint = new JToggleButton("Hint: Default -> ON");
         hint.setFont(BUTTON_FONTS);
