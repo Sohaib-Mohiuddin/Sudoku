@@ -1,3 +1,5 @@
+CREATE JAR FILE COMMAND: jar cvfm Sudoku-sama.jar manifest.txt *.class
+
 - frame (IN PROGRESS)
     - grid layout null (TODO)(DONE)
     - create menubar (TODO)

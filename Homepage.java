@@ -18,6 +18,7 @@ public class Homepage extends JFrame{
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public Homepage() {
+        
         Gui();
     }
     public void Gui() {
