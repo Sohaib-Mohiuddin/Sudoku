@@ -21,7 +21,7 @@ public class Homepage extends JFrame{
         frame.setPreferredSize(new Dimension(1000, 1000));
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle("7yhujiuij");
+        frame.setTitle("Sudoku");
         frame.setVisible(true);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
