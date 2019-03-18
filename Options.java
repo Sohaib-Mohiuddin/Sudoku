@@ -10,7 +10,11 @@ public class Options extends JFrame{
     public JButton Beginner, Intermediate, Expert, Return;
     public JToggleButton soundButton;
     public JLabel modeLabel, soundLabel;
-    public JMenuBar menu;
+    public JMenuBar menubar;
+    public JMenu menu_file, submenu;
+    public JMenuItem item_home, item_quit;
+
+    public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
     public Options() {
         Gui();
@@ -26,6 +30,28 @@ public class Options extends JFrame{
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.CYAN);
 
+        menubar = new JMenuBar();
+        menu_file = new JMenu("File");
+        item_home = new JMenuItem("Home");
+        item_quit = new JMenuItem("Quit");
+        
+        item_quit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
+        item_home.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                Homepage homepage = new Homepage();
+                frame.setVisible(false);
+            }
+        });
+        menu_file.add(item_home); menu_file.add(item_quit);
+        menubar.add(menu_file);
 
         Beginner = new JButton("Beginner (Kouhai)");
         Intermediate = new JButton("Intermediate (Senpai)");
@@ -51,11 +77,11 @@ public class Options extends JFrame{
             public void actionPerformed(ActionEvent e)
             {
                 Homepage homepage = new Homepage();
-
                 frame.setVisible(false);
             }
         });
 
+        frame.setJMenuBar(menubar);
         frame.add(Beginner);
         frame.add(Intermediate);
         frame.add(Expert);
@@ -63,8 +89,6 @@ public class Options extends JFrame{
         frame.add(soundLabel);
         frame.add(Return);
         frame.add(soundButton);
-
-
 
         frame.pack();
         frame.setLocationRelativeTo(null);
