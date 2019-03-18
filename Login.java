@@ -66,12 +66,19 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent ae){
                String usernameValue = username_input.getText();
                String passwordValue = password_input.getText();
-               
+
+               if ((usernameValue.equals(LOGIN1) && passwordValue.equals(PASSWORD1)) || (usernameValue.equals(LOGIN2) && 
+               passwordValue.equals(PASSWORD2)) || (usernameValue.equals(LOGIN3) && passwordValue.equals(PASSWORD3))) {
+                    JOptionPane.showMessageDialog(null, "You did it");
+               } else {
+                    JOptionPane.showMessageDialog(null, "Try again");
+               }
             }
          });
          clear.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent ae){
-               
+               username_input.setText("");
+               password_input.setText("");
             }
          });
 
