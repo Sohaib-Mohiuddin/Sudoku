@@ -15,6 +15,8 @@ public class Options extends JFrame{
     public JMenu menu_file, submenu;
     public JMenuItem item_home, item_quit;
 
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
+
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font MENU_FONTS = new Font("Comic Sans MS", Font.BOLD, 20);
 
@@ -30,7 +32,7 @@ public class Options extends JFrame{
         frame.setTitle("Options");
         
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.CYAN);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");

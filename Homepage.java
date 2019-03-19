@@ -14,6 +14,8 @@ public class Homepage extends JFrame{
     public JMenu menu_file, submenu;
     public JMenuItem item_options, item_quit, item_logout;
 
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
+
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
@@ -27,7 +29,7 @@ public class Homepage extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Sudoku");
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.cyan);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");

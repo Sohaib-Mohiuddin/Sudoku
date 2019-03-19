@@ -30,6 +30,7 @@ public class Play extends JFrame {
     public static final Color WRONG_ANSWER = Color.RED;
     public static final Color UNCLICKED_BOX = Color.white;
     public static final Color CLICKED_BOX = Color.CYAN;
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font BUTTON_FONTS = new Font("Comic Sans MS", Font.BOLD, 15);
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
@@ -60,7 +61,7 @@ public class Play extends JFrame {
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.cyan);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -187,7 +188,7 @@ public class Play extends JFrame {
 
                 if (previousRowPicked != -1 && previousColPicked != -1) {
                     if(mask[previousRowPicked][previousColPicked]) {
-                        cells[previousRowPicked][previousColPicked].setBackground(CLICKED_BOX);
+                        cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
                     } else {
                         cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
                     }
@@ -222,10 +223,7 @@ public class Play extends JFrame {
                     for (int j = 0; j < SUBGRID_SIZE && !found_button; ++j) {
                         if(nums[i][j] == button_source) {
                             rowPicked_button = i;
-                            colPicked_button = j;
-                            //System.out.println(nums[i][j].getText());
-                            //cells[i][j].setText(nums[i][j].getText());
-                            
+                            colPicked_button = j;                          
                             found_button = true;   
                         }
                     }
