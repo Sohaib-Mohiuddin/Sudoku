@@ -1,3 +1,5 @@
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,47 +8,86 @@ import java.awt.event.*;
 public class Homepage extends JFrame{
 
     public JFrame frame;
-
-    public JButton play, options, help, quit;
+    public JButton play, options, help, quit, logout;
     public JLabel title, label2;
-    public JMenuBar menu;
+    public JMenuBar menubar;
+    public JMenu menu_file, submenu;
+    public JMenuItem item_options, item_quit, item_logout;
+
+    public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
+    public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public Homepage() {
+        
         Gui();
-
     }
-
     public void Gui() {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1000, 1000));
-        frame.setLocationRelativeTo(null);
+        frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Sudoku");
-        frame.setVisible(true);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.cyan);
+
+        menubar = new JMenuBar();
+        menu_file = new JMenu("File");
+        item_quit = new JMenuItem("Quit");
+        item_logout = new JMenuItem("Logout");
+        menu_file.setFont(FONT_BUTTONS);
+        item_quit.setFont(FONT_BUTTONS);
+        item_logout.setFont(FONT_BUTTONS);
+        
+        item_quit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
+        item_logout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    Login login = new Login();
+                    frame.setVisible(false);
+                }
+            }
+        });
+
+        menu_file.add(item_quit); menu_file.add(item_logout);
+        menubar.add(menu_file);
 
         play = new JButton("Play");
         options = new JButton("Options");
         help = new JButton("Help");
         quit = new JButton("Quit");
+        logout = new JButton("Logout");
 
-        play.setBounds(300, 420, 150, 40);
-        options.setBounds(300, 480, 150, 40);
-        help.setBounds(510, 420, 150, 40);
-        quit.setBounds(510, 480, 150, 40);
+        play.setBounds(560, 420, 200, 50);
+        options.setBounds(560, 480, 200, 50);
+        help.setBounds(770, 420, 200, 50);
+        quit.setBounds(770, 480, 200, 50);
+        logout.setBounds(1250, 860, 200, 50);
+
+        play.setFont(FONT_BUTTONS);
+        options.setFont(FONT_BUTTONS);
+        help.setFont(FONT_BUTTONS);
+        quit.setFont(FONT_BUTTONS);
+        logout.setFont(FONT_BUTTONS);
 
         title = new JLabel("Welcome to Sudoku-sama");
         title.setFont(new Font("Comic Sans", Font.BOLD, 30));
-        title.setBounds(300, 100, 400, 50);
+        title.setBounds(580, 100, 400, 70);
 
         label2 = new JLabel("© A product of JUSS Games Inc.");
-        label2.setBounds(800, 900, 200, 50);
+        label2.setBounds(650, 880, 200, 50);
 
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Help help = new Help();
-
                 frame.setVisible(false);
             }
         });
@@ -76,11 +117,24 @@ public class Homepage extends JFrame{
                 frame.setVisible(false);
             }
         });
+        logout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    Login login = new Login();
+                    frame.setVisible(false);
+                }
+            }
+        });
 
+        frame.setJMenuBar(menubar);
         frame.add(play);
         frame.add(options);
         frame.add(help);
         frame.add(quit);
+        frame.add(logout);
         frame.add(title);
         frame.add(label2);
 
@@ -91,8 +145,8 @@ public class Homepage extends JFrame{
     }
 
     public static void main(String[] args) {
-
-        new Homepage();
+        Homepage homepage = new Homepage();
+        //homepage.Gui();
     }
 
 
