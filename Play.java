@@ -9,14 +9,12 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
 
-import static javax.management.timer.Timer.ONE_SECOND;
-
 public class Play extends JFrame {
 
     public JFrame frame;
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help, one, two, three, four, five, six, seven, eight, nine;
-    public JToggleButton hint, start;
+    public JToggleButton hint;
     public JLabel title_play, timer1;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
@@ -39,7 +37,7 @@ public class Play extends JFrame {
     boolean[][] hidden;
 
     gameGenerator newPuzzle = new gameGenerator();
-	private int[][] puzzle = newPuzzle.getPuzzle();
+    private int[][] puzzle = newPuzzle.getPuzzle();
 
     private boolean[][] mask = maskGenerator();
 
@@ -49,8 +47,6 @@ public class Play extends JFrame {
 
     private static int cnt;
     private Timer timer;
-
-    //final String propertyName = "text";
 
     public Play() {
         GUI();
@@ -68,7 +64,10 @@ public class Play extends JFrame {
         menu_file = new JMenu("File");
         item_options = new JMenuItem("Options");
         item_quit = new JMenuItem("Quit");
-        
+        menu_file.setFont(FONT_NUMBERS);
+        item_options.setFont(FONT_NUMBERS);
+        item_quit.setFont(FONT_NUMBERS);
+
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
@@ -78,10 +77,11 @@ public class Play extends JFrame {
                 }
             }
         });
+
         timer1 = new JLabel();
         timer1.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         timer1.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
-         ActionListener actListner = new ActionListener() {
+        ActionListener actListner = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 cnt += 1;
@@ -94,8 +94,8 @@ public class Play extends JFrame {
         Timer timer = new Timer(1000, actListner);
         timer.start();
 
-
         save = new JMenuItem("Save");
+        save.setFont(FONT_NUMBERS);
         menu_file.add(save); menu_file.add(item_options); menu_file.add(item_quit);
         menubar.add(menu_file);
 
@@ -109,10 +109,30 @@ public class Play extends JFrame {
         return_button = new JButton("Return to Main Menu");
         return_button.setFont(BUTTON_FONTS);
         return_button.setBounds(1250, 860, 200, 50);
+        return_button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    new Homepage();
+                    frame.setVisible(false);
+                }
+            }
+        });
 
         help = new JButton("Help");
         help.setFont(BUTTON_FONTS);
         help.setBounds(115, 450, 200, 50);
+        help.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                JOptionPane.showMessageDialog(null, "To play, you first pick a blue box and enter the number you think it is, \n" +
+                        "then you press enter and see if you are correct. If the box turns green \n" +
+                        "you are correct, if it is red then you are incorrect. The objective \n" +
+                        "of Sudoku is to fill up the boxes with a number between 1-9 that \n" +
+                        "doesn't repeat in the rows, columns, or subgrids. To return to the menu \n" +
+                        "while playing, press the esc button.");
+            }
+        });
 
         hint = new JToggleButton("Hints:ON");
         hint.setFont(BUTTON_FONTS);
@@ -180,6 +200,7 @@ public class Play extends JFrame {
                         cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
                     }
                 }
+
                 previousRowPicked = rowPicked;
                 previousColPicked = colPicked;
             }
@@ -202,8 +223,8 @@ public class Play extends JFrame {
                             colPicked_button = j;
                             //System.out.println(nums[i][j].getText());
                             //cells[i][j].setText(nums[i][j].getText());
-                            
-                            found_button = true;   
+
+                            found_button = true;
                         }
                     }
                 }
@@ -211,12 +232,12 @@ public class Play extends JFrame {
         };
 
         int button_numbers = 1;
-        
+
         for (int i = 0; i < SUBGRID_SIZE; ++i) {
             for (int j = 0; j < SUBGRID_SIZE; ++j) {
                 nums[i][j] = new JButton(button_numbers + "");
                 nums[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-                
+
                 /**
                  * FIXME:
                  * Fix dragging values from number panel
@@ -248,15 +269,15 @@ public class Play extends JFrame {
                 cells[i][j].addActionListener(action);
 
                 if (i % 3 == 0 && i != 0){
-					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
-				}
-				if (j % 3 == 0 && j != 0){
-					cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 4, 1, 1, Color.black));
-				}
-				if (i % 3 == 0 && j % 3 == 0 && j != 0 && i != 0){
-					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 4, 1, 1, Color.black));
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
                 }
-                
+                if (j % 3 == 0 && j != 0){
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(1, 4, 1, 1, Color.black));
+                }
+                if (i % 3 == 0 && j % 3 == 0 && j != 0 && i != 0){
+                    cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 4, 1, 1, Color.black));
+                }
+
                 panel1.add(cells[i][j]);
 
                 if (mask[i][j]) {
@@ -264,9 +285,9 @@ public class Play extends JFrame {
                     cells[i][j].setEditable(true);
                     cells[i][j].setBackground(Color.white);
                     cells[i][j].setForeground(new Color(0, 0, 153));
-                    
-                 } else {
-                    
+
+                } else {
+
                     for (int x = 0; x < GRID_SIZE; x++) {
                         for (int y = 0; y < GRID_SIZE; y++) {
                             cells[i][j].setText(puzzle[i][j] + "");
@@ -275,11 +296,11 @@ public class Play extends JFrame {
                     cells[i][j].setEditable(false);
                     cells[i][j].setBackground(Color.LIGHT_GRAY);
                     cells[i][j].setForeground(new Color(0, 0, 153));
-                 }
+                }
 
-                 // Beautify all the cells
-                 cells[i][j].setHorizontalAlignment(JTextField.CENTER);
-                 cells[i][j].setFont(FONT_NUMBERS);
+                // Beautify all the cells
+                cells[i][j].setHorizontalAlignment(JTextField.CENTER);
+                cells[i][j].setFont(FONT_NUMBERS);
             }
         }
 
@@ -292,7 +313,6 @@ public class Play extends JFrame {
         frame.getContentPane().add(num_panel);
         frame.getContentPane().add(timer1);
 
-
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
@@ -303,7 +323,7 @@ public class Play extends JFrame {
 
     public boolean[][] maskGenerator() {
         Random random = new Random();
-        
+
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
 
         for (int i = 0; i < GRID_SIZE; i++) {
@@ -322,7 +342,6 @@ public class Play extends JFrame {
     public static void main(String[] args) {
         new Play();
 
-        
     }
 
     public static class ValueExportTransferHandler extends TransferHandler {
