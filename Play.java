@@ -17,7 +17,7 @@ public class Play extends JFrame {
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help, one, two, three, four, five, six, seven, eight, nine;
     public JToggleButton hint;
-    public JLabel title_play, label2;
+    public JLabel title_play, timer1;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
@@ -47,7 +47,8 @@ public class Play extends JFrame {
     private JButton[][] nums = new JButton[SUBGRID_SIZE][SUBGRID_SIZE];
     JPanel cell_panels = new JPanel();
 
-    //final String propertyName = "text";
+    private static int cnt;
+    private Timer timer;
 
     public Play() {
         GUI();
@@ -78,6 +79,23 @@ public class Play extends JFrame {
                 }
             }
         });
+
+        timer1 = new JLabel();
+        timer1.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
+        timer1.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+         ActionListener actListner = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                cnt += 1;
+
+                timer1.setText("Timer: " + Integer.toString(cnt));
+                timer1.setBounds(150,100,200,40);
+                timer1.setHorizontalAlignment(JLabel.CENTER);
+            }
+        };
+        Timer timer = new Timer(1000, actListner);
+        timer.start();
+
         save = new JMenuItem("Save");
         save.setFont(FONT_NUMBERS);
         menu_file.add(save); menu_file.add(item_options); menu_file.add(item_quit);
@@ -283,6 +301,7 @@ public class Play extends JFrame {
         frame.add(hint);
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(num_panel);
+        frame.getContentPane().add(timer1);
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
