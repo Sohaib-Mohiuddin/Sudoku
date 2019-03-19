@@ -136,10 +136,22 @@ public class Play extends JFrame {
             }
         });
 
-        hint = new JToggleButton("Hint: Default -> ON");
+        hint = new JToggleButton("Hints:ON");
         hint.setFont(BUTTON_FONTS);
         hint.setBounds(115, 550, 200, 50);
         hint.setSelected(true);
+
+        hint.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    hint.setText("Hints:ON");
+                } else {
+                    hint.setText("Hints:OFF");
+                }
+            }
+        });
 
         num_panel = new JPanel();
         num_panel.setBackground(Color.PINK);
