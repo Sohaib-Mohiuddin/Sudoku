@@ -113,8 +113,7 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Play play = new Play(2);
-                //play.maskGenerator();
+                Play play = new Play(1);
                 frame.setVisible(false);
             }
         });

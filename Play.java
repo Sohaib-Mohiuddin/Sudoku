@@ -16,16 +16,16 @@ public class Play extends JFrame {
 
     public JFrame frame;
     public JPanel panel1, num_panel, timer_panel;
-    public JButton return_button, help, one, two, three, four, five, six, seven, eight, nine;
+    public JButton return_button, help;
     public JToggleButton hint;
-    public JLabel title_play, timer1;
+    public JLabel title_play, timer1, remainingCells;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
 
     private int gamemodepicked;
     public int gamemode;
-    //public int gmode;
+    private int remainingcells, initialcells = 0;
 
     public static final int GRID_SIZE = 9;
     public static final int SUBGRID_SIZE = 3;
@@ -46,9 +46,7 @@ public class Play extends JFrame {
 
     gameGenerator newPuzzle = new gameGenerator();
 	private int[][] puzzle = newPuzzle.getPuzzle();
-
     private boolean[][] mask;
-    //private boolean[][] mask;
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     private JButton[][] nums = new JButton[SUBGRID_SIZE][SUBGRID_SIZE];
@@ -115,6 +113,12 @@ public class Play extends JFrame {
         Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
+
+        remainingCells = new JLabel();
+        remainingCells.setBounds(50,200,300,40);
+        remainingCells.setFont(BUTTON_FONTS);
+        remainingCells.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+        remainingCells.setText("Number of remaining boxes: --");
 
         return_button = new JButton("Return to Main Menu");
         return_button.setFont(BUTTON_FONTS);
@@ -208,8 +212,14 @@ public class Play extends JFrame {
                     if (user_input == puzzle[rowPicked][colPicked]) {
                         cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                         cells[rowPicked][colPicked].setEditable(false);
+                        remainingcells--;
+                        remainingCells.setText("Number of remaining boxes: " +remainingcells);
+                        if (remainingcells == 0) {
+                            timer.stop();
+                        }
                     } else {
                         cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
+                        cells[rowPicked][colPicked].setText("");
                     }
                 }
 
@@ -276,6 +286,7 @@ public class Play extends JFrame {
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 cells[i][j].setTransferHandler(new ValueImportTransferHandler());
                 cells[i][j].addActionListener(action);
+                
 
                 if (i % 3 == 0 && i != 0){
 					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
@@ -292,8 +303,9 @@ public class Play extends JFrame {
                 if (mask[i][j]) {
                     cells[i][j].setText("");
                     cells[i][j].setEditable(true);
-                    cells[i][j].setBackground(Color.white);
+                    cells[i][j].setBackground(CLICKED_BOX);
                     cells[i][j].setForeground(new Color(0, 0, 153));
+                    initialcells++;
                     
                  } else {
                     
@@ -310,14 +322,16 @@ public class Play extends JFrame {
                  // Beautify all the cells
                  cells[i][j].setHorizontalAlignment(JTextField.CENTER);
                  cells[i][j].setFont(FONT_NUMBERS);
+                 remainingcells = initialcells;
             }
         }
 
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
-        frame.add(return_button);
-        frame.add(help);
-        frame.add(hint);
+        frame.getContentPane().add(return_button);
+        frame.getContentPane().add(help);
+        frame.getContentPane().add(hint);
+        frame.getContentPane().add(remainingCells);
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(num_panel);
         frame.getContentPane().add(timer1);
