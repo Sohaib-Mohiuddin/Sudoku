@@ -4,6 +4,7 @@ import java.awt.*; import java.awt.event.*;
 import java.awt.font.TextAttribute;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.util.Random; import java.util.Map; import java.util.HashMap;
 
 import java.awt.datatransfer.DataFlavor;
@@ -21,6 +22,10 @@ public class Play extends JFrame {
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
+
+    private int gamemodepicked;
+    public int gamemode;
+    //public int gmode;
 
     public static final int GRID_SIZE = 9;
     public static final int SUBGRID_SIZE = 3;
@@ -42,7 +47,8 @@ public class Play extends JFrame {
     gameGenerator newPuzzle = new gameGenerator();
 	private int[][] puzzle = newPuzzle.getPuzzle();
 
-    private boolean[][] mask = maskGenerator();
+    private boolean[][] mask;
+    //private boolean[][] mask;
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     private JButton[][] nums = new JButton[SUBGRID_SIZE][SUBGRID_SIZE];
@@ -51,17 +57,18 @@ public class Play extends JFrame {
     private static int cnt;
     private Timer timer;
 
-    public Play() {
-        GUI();
-    }
+    public Play(int gmode) {
 
-    public void GUI() {
         frame = new JFrame();
         frame.setSize(1500, 1000);
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+
+        gamemode = 0;
+        this.gamemode = gmode;
+        mask = maskGenerator();
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -90,7 +97,7 @@ public class Play extends JFrame {
                 cnt += 1;
 
                 timer1.setText("Timer: " + Integer.toString(cnt));
-                timer1.setBounds(150,100,200,40);
+                timer1.setBounds(115,100,200,40);
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
@@ -112,6 +119,8 @@ public class Play extends JFrame {
         return_button = new JButton("Return to Main Menu");
         return_button.setFont(BUTTON_FONTS);
         return_button.setBounds(1250, 860, 200, 50);
+        return_button.setBackground(BACKGROUND_COLOUR);
+        return_button.setBorder(new EmptyBorder(0,0,0,0));
         return_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
@@ -157,7 +166,7 @@ public class Play extends JFrame {
         num_panel = new JPanel();
         num_panel.setBackground(Color.PINK);
         num_panel.setLayout(new GridLayout(3, 3));
-        num_panel.setBounds(1100, 200, CELL_SIZE*3, CELL_SIZE*3);
+        num_panel.setBounds(1100, 400, CELL_SIZE*3, CELL_SIZE*3);
         num_panel.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         panel1 = new JPanel();
@@ -317,19 +326,27 @@ public class Play extends JFrame {
         frame.setLocationRelativeTo(null);
     }
 
-    public void setSelected(boolean b) {
-        b = true;
-    }
-
     public boolean[][] maskGenerator() {
         Random random = new Random();
-        
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
+        // int difficulty = 0;
+        switch(gamemode) {
+            case 1:
+            gamemode = 2;
+            break;
 
+            case 2:
+            gamemode = 3;
+            break;
+
+            case 3:
+            gamemode = 4;
+            break;
+        }
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
-                int randomnum = random.nextInt(4) + 1;
-                if (randomnum <= 3) {
+                int randomnum = random.nextInt(5) + 1;
+                if (randomnum <= gamemode) {
                     cover[i][j] = true;
                 } else {
                     cover[i][j] = false;
@@ -337,11 +354,10 @@ public class Play extends JFrame {
             }
         }
         return cover;
-    }
+    }    
 
-    public static void main(String[] args) {
-        new Play();
-        
+    public void setSelected(boolean b) {
+        b = true;
     }
 
     public static class ValueExportTransferHandler extends TransferHandler {

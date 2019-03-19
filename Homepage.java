@@ -1,11 +1,11 @@
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Random;
 
 //@SuppressWarnings("serial")
-public class Homepage extends JFrame{
+public class Homepage extends JFrame {
 
     public JFrame frame;
     public JButton play, options, help, quit, logout;
@@ -19,11 +19,9 @@ public class Homepage extends JFrame{
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
+    public static final int GRID_SIZE = 9;
+
     public Homepage() {
-        
-        Gui();
-    }
-    public void Gui() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,7 +113,8 @@ public class Homepage extends JFrame{
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Play play = new Play();
+                Play play = new Play(2);
+                //play.maskGenerator();
                 frame.setVisible(false);
             }
         });
@@ -143,12 +142,10 @@ public class Homepage extends JFrame{
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
     }
 
     public static void main(String[] args) {
         Homepage homepage = new Homepage();
-        //homepage.Gui();
     }
 
 

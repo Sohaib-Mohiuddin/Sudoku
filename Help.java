@@ -1,6 +1,7 @@
 
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -19,10 +20,6 @@ public class Help extends JFrame {
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
     public Help() {
-        Gui();
-    }
-    public void Gui() {
-
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +56,8 @@ public class Help extends JFrame {
         returnButton = new JButton("Return");
         returnButton.setFont(new Font("Comic Sans", Font.BOLD, 30));
         returnButton.setBounds(1250, 860, 200, 50);
+        returnButton.setBackground(BACKGROUND_COLOUR);
+        returnButton.setBorder(new EmptyBorder(0,0,0,0));
 
         pageTitle = new JLabel("How to Play");
         pageTitle.setFont(TITLE_FONTS);

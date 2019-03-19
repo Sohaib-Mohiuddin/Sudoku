@@ -22,10 +22,7 @@ public class Login extends JFrame {
                                 PASSWORD3 = "requirements";
 
     public Login() {
-        Gui();
-    }
-
-    public void Gui() {
+        
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
