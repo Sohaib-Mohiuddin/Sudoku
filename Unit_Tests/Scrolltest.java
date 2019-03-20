@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Scrolltest extends JFrame {
     public JTextArea highscore_text;
     public JMenu menu_file, submenu;
     public JMenuItem item_home, item_quit;
+    public JTextField texting;
 
     public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
@@ -46,10 +49,29 @@ public class Scrolltest extends JFrame {
 
         scroller.setBounds(50,200,250,200);
         scroller.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
-        
+
+        button6 = new JButton();
+        button6.setBounds(50,600,250,50);
+        button6.setFont(BUTTON_FONTS);
+        button6.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
+
+        texting = new JTextField();
+        texting.setBounds(500,200,250,50);
+        texting.setFont(BUTTON_FONTS);
+        texting.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
+
+        button6.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                texting.setText("hello");
+            }
+        });
         
         //frame.add(highscore_text);
         frame.getContentPane().add(scroller);
+        frame.getContentPane().add(button6);
+        frame.getContentPane().add(texting);
         frame.revalidate();
 
         frame.pack();

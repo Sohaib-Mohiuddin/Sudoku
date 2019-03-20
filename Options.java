@@ -95,7 +95,7 @@ public class Options extends JFrame {
         Beginner.setFont(FONT_BUTTONS);
         Intermediate.setFont(FONT_BUTTONS);
         Expert.setFont(FONT_BUTTONS);
-        Return.setFont(FONT_BUTTONS);
+        Return.setFont(new Font("Comic Sans", Font.BOLD, 30));
         soundButton.setFont(FONT_BUTTONS);
 
         Return.addActionListener(new ActionListener()

@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
@@ -18,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
+// import java.awt.datatransfer.DataFlavor;
+// import java.awt.datatransfer.StringSelection;
+// import java.awt.datatransfer.Transferable;
+// import java.awt.dnd.DnDConstants;
 
 public class Play extends JFrame {
 
@@ -150,13 +149,14 @@ public class Play extends JFrame {
         remainingCells.setText("Number of remaining boxes: --");
 
         return_button = new JButton("Return to Main Menu");
-        return_button.setFont(BUTTON_FONTS);
-        return_button.setBounds(1250, 860, 200, 50);
+        return_button.setFont(new Font("Comic Sans", Font.BOLD, 30));
+        return_button.setBounds(1150, 860, 300, 50);
         return_button.setBackground(BACKGROUND_COLOUR);
         return_button.setBorder(new EmptyBorder(0,0,0,0));
         return_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?" + "\n" + 
+                                                        "You will lose your progress." , "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION)
                 {
                     new Homepage();
@@ -292,11 +292,13 @@ public class Play extends JFrame {
                     for (int j = 0; j < SUBGRID_SIZE && !found_button; ++j) {
                         if(nums[i][j] == button_source) {
                             rowPicked_button = i;
-                            colPicked_button = j;                          
+                            colPicked_button = j;   
                             found_button = true;   
                         }
                     }
                 }
+                int button_user_input = Integer.parseInt(nums[rowPicked_button][colPicked_button].getText());
+                System.out.println(button_user_input);
             }
         };
 
@@ -306,12 +308,13 @@ public class Play extends JFrame {
             for (int j = 0; j < SUBGRID_SIZE; ++j) {
                 nums[i][j] = new JButton(button_numbers + "");
                 nums[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-                
+                nums[i][j].addActionListener(button_action);
+
                 /**
                  * FIXME:
                  * Fix dragging values from number panel
-                 */
-                nums[i][j].addActionListener(button_action);
+                 *
+                 *
                 int button_user_input = Integer.parseInt(nums[i][j].getText());
                 nums[i][j].setTransferHandler(new ValueExportTransferHandler(Integer.toString(button_user_input)));
 
@@ -323,9 +326,10 @@ public class Play extends JFrame {
                         handle.exportAsDrag(button, e, TransferHandler.COPY);
                     }
                 });
+
+                 */
                 button_numbers++;
                 num_panel.add(nums[i][j]);
-
             }
         }
 
@@ -334,7 +338,7 @@ public class Play extends JFrame {
 
                 cells[i][j] = new JTextField();
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-                cells[i][j].setTransferHandler(new ValueImportTransferHandler());
+                //cells[i][j].setTransferHandler(new ValueImportTransferHandler());
                 cells[i][j].addActionListener(action);
                 
 
@@ -401,7 +405,6 @@ public class Play extends JFrame {
     public boolean[][] maskGenerator() {
         Random random = new Random();
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
-        // int difficulty = 0;
         switch(gamemode) {
             case 1:
             gamemode = 2;
@@ -419,9 +422,9 @@ public class Play extends JFrame {
             for (int j = 0; j < GRID_SIZE; j++) {
                 int randomnum = random.nextInt(5) + 1;
                 if (randomnum <= gamemode) {
-                    cover[i][j] = false;
-                } else {
                     cover[i][j] = true;
+                } else {
+                    cover[i][j] = false;
                 }
             }
         }
@@ -468,6 +471,11 @@ public class Play extends JFrame {
         }
     }
 
+    /**
+     * TODO:
+     * fix classes to drag values from num panel in the future
+     * 
+     * 
     public static class ValueExportTransferHandler extends TransferHandler {
 
         public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
@@ -533,4 +541,7 @@ public class Play extends JFrame {
             return accept;
         }
     }
+    *
+    *
+    **/
 }
