@@ -13,6 +13,8 @@ public class Login extends JFrame {
     public JMenu menu_file;
     public JMenuItem item_quit;
 
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
+
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
@@ -20,16 +22,13 @@ public class Login extends JFrame {
                                 PASSWORD3 = "requirements";
 
     public Login() {
-        Gui();
-    }
 
-    public void Gui() {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1500, 1000));
+        frame.setPreferredSize(new Dimension(500, 500));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Login Page");
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.cyan);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -52,22 +51,22 @@ public class Login extends JFrame {
 
         username = new JLabel("Username");
         password = new JLabel("Password");
-        username.setBounds(200, 200, 100, 40);
-        password.setBounds(200, 270, 100, 40);
+        username.setBounds(50, 50, 100, 40);
+        password.setBounds(50, 120, 100, 40);
         username.setFont(FONT_BUTTONS);
         password.setFont(FONT_BUTTONS);
 
         username_input = new JTextField();
         password_input = new JPasswordField();
-        username_input.setBounds(350, 200, 200, 40);
-        password_input.setBounds(350, 270, 200, 40);
+        username_input.setBounds(150, 50, 300, 40);
+        password_input.setBounds(150, 120, 300, 40);
         username_input.setFont(FONT_BUTTONS);
         password_input.setFont(FONT_BUTTONS);
 
         login = new JButton("Login");
         clear = new JButton("Clear");
-        login.setBounds(560, 480, 200, 50);
-        clear.setBounds(770, 480, 200, 50);
+        login.setBounds(50, 200, 200, 50);
+        clear.setBounds(270, 200, 200, 50);
         login.setFont(FONT_BUTTONS);
         clear.setFont(FONT_BUTTONS);
 

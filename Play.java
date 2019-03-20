@@ -1,10 +1,16 @@
 
-
-import java.awt.*; import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.*;
-import java.util.Random; import java.util.Map; import java.util.HashMap;
+import javax.swing.border.*;
+import java.util.Random; 
+import java.util.Map; 
+import java.util.HashMap;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -15,9 +21,9 @@ public class Play extends JFrame {
 
     public JFrame frame;
     public JPanel panel1, num_panel, timer_panel;
-    public JButton return_button, help, one, two, three, four, five, six, seven, eight, nine;
+    public JButton return_button, help;
     public JToggleButton hint;
-    public JLabel title_play, timer1;
+    public JLabel title_play, timer1, remainingCells, finalscore_label;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
@@ -30,6 +36,7 @@ public class Play extends JFrame {
     public static final Color WRONG_ANSWER = Color.RED;
     public static final Color UNCLICKED_BOX = Color.white;
     public static final Color CLICKED_BOX = Color.CYAN;
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font BUTTON_FONTS = new Font("Comic Sans MS", Font.BOLD, 15);
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
@@ -40,8 +47,7 @@ public class Play extends JFrame {
 
     gameGenerator newPuzzle = new gameGenerator();
 	private int[][] puzzle = newPuzzle.getPuzzle();
-
-    private boolean[][] mask = maskGenerator();
+    private boolean[][] mask;
 
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     private JButton[][] nums = new JButton[SUBGRID_SIZE][SUBGRID_SIZE];
@@ -49,18 +55,24 @@ public class Play extends JFrame {
 
     private static int cnt;
     private Timer timer;
+    private int gamemodepicked;
+    public int gamemode;
+    private int remainingcells, initialcells = 0;
+    public int score;
 
-    public Play() {
-        GUI();
-    }
+    public Play(int gmode) {
 
-    public void GUI() {
         frame = new JFrame();
         frame.setSize(1500, 1000);
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.cyan);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+
+        gamemode = 0;
+        this.gamemode = gmode;
+        mask = maskGenerator();
+
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -87,9 +99,23 @@ public class Play extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 cnt += 1;
-
-                timer1.setText("Timer: " + Integer.toString(cnt));
-                timer1.setBounds(150,100,200,40);
+                if (cnt < 10) {
+                    timer1.setText("Timer: 00:0" + Integer.toString(cnt));
+                }
+                else if (cnt < 60){
+					timer1.setText("Timer: 00:" + Integer.toString(cnt));
+                }
+                else if (cnt % 60 < 10) {
+                    timer1.setText("Timer: " + Integer.toString(cnt/60) + ":0" + Integer.toString(cnt%60));
+                }
+                else if (cnt < 600){
+                    timer1.setText("Timer: 0" + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
+                }
+                else {
+                    timer1.setText("Timer: " + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
+                }
+                
+                timer1.setBounds(50,100,300,40);
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
@@ -108,9 +134,17 @@ public class Play extends JFrame {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
 
+        remainingCells = new JLabel();
+        remainingCells.setBounds(50,200,300,40);
+        remainingCells.setFont(BUTTON_FONTS);
+        remainingCells.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+        remainingCells.setText("Number of remaining boxes: --");
+
         return_button = new JButton("Return to Main Menu");
         return_button.setFont(BUTTON_FONTS);
         return_button.setBounds(1250, 860, 200, 50);
+        return_button.setBackground(BACKGROUND_COLOUR);
+        return_button.setBorder(new EmptyBorder(0,0,0,0));
         return_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
@@ -141,6 +175,11 @@ public class Play extends JFrame {
         hint.setBounds(115, 550, 200, 50);
         hint.setSelected(true);
 
+        finalscore_label = new JLabel("Final score: Finish to reveal");
+        finalscore_label.setBounds(50,250,250,40);
+        finalscore_label.setFont(BUTTON_FONTS);
+        finalscore_label.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+
         hint.addItemListener(new ItemListener() {
 
             @Override
@@ -156,7 +195,7 @@ public class Play extends JFrame {
         num_panel = new JPanel();
         num_panel.setBackground(Color.PINK);
         num_panel.setLayout(new GridLayout(3, 3));
-        num_panel.setBounds(1100, 200, CELL_SIZE*3, CELL_SIZE*3);
+        num_panel.setBounds(1100, 400, CELL_SIZE*3, CELL_SIZE*3);
         num_panel.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         panel1 = new JPanel();
@@ -187,7 +226,7 @@ public class Play extends JFrame {
 
                 if (previousRowPicked != -1 && previousColPicked != -1) {
                     if(mask[previousRowPicked][previousColPicked]) {
-                        cells[previousRowPicked][previousColPicked].setBackground(CLICKED_BOX);
+                        cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
                     } else {
                         cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
                     }
@@ -198,8 +237,20 @@ public class Play extends JFrame {
                     if (user_input == puzzle[rowPicked][colPicked]) {
                         cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                         cells[rowPicked][colPicked].setEditable(false);
+                        remainingcells--;
+                        score++;
+                        remainingCells.setText("Number of remaining boxes: " +remainingcells);
                     } else {
                         cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
+                        cells[rowPicked][colPicked].setText("");
+                        score--;
+                    }
+                    if (remainingcells == 0) {
+                        timer.stop();
+                        int finalScore = (int)(((double)(score)/(double)(initialcells))*100);
+                        finalscore_label.setText("Your final score is: " + finalScore + "%");
+                        finalscore_label.setVisible(true);
+                        saveToFile(finalScore);
                     }
                 }
 
@@ -222,10 +273,7 @@ public class Play extends JFrame {
                     for (int j = 0; j < SUBGRID_SIZE && !found_button; ++j) {
                         if(nums[i][j] == button_source) {
                             rowPicked_button = i;
-                            colPicked_button = j;
-                            //System.out.println(nums[i][j].getText());
-                            //cells[i][j].setText(nums[i][j].getText());
-                            
+                            colPicked_button = j;                          
                             found_button = true;   
                         }
                     }
@@ -269,6 +317,7 @@ public class Play extends JFrame {
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 cells[i][j].setTransferHandler(new ValueImportTransferHandler());
                 cells[i][j].addActionListener(action);
+                
 
                 if (i % 3 == 0 && i != 0){
 					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
@@ -285,8 +334,9 @@ public class Play extends JFrame {
                 if (mask[i][j]) {
                     cells[i][j].setText("");
                     cells[i][j].setEditable(true);
-                    cells[i][j].setBackground(Color.white);
+                    cells[i][j].setBackground(CLICKED_BOX);
                     cells[i][j].setForeground(new Color(0, 0, 153));
+                    initialcells++;
                     
                  } else {
                     
@@ -303,14 +353,23 @@ public class Play extends JFrame {
                  // Beautify all the cells
                  cells[i][j].setHorizontalAlignment(JTextField.CENTER);
                  cells[i][j].setFont(FONT_NUMBERS);
+                 remainingcells = initialcells;
+                 
+            }
+        }
+        for (int c = 0; c < 9; c++) {
+            for (int d = 0; d < 9; d++) {
+                System.out.print(puzzle[c][d]);
             }
         }
 
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
-        frame.add(return_button);
-        frame.add(help);
-        frame.add(hint);
+        frame.getContentPane().add(return_button);
+        frame.getContentPane().add(help);
+        frame.getContentPane().add(hint);
+        frame.getContentPane().add(remainingCells);
+        frame.getContentPane().add(finalscore_label);
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(num_panel);
         frame.getContentPane().add(timer1);
@@ -319,19 +378,27 @@ public class Play extends JFrame {
         frame.setLocationRelativeTo(null);
     }
 
-    public void setSelected(boolean b) {
-        b = true;
-    }
-
     public boolean[][] maskGenerator() {
         Random random = new Random();
-        
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
+        // int difficulty = 0;
+        switch(gamemode) {
+            case 1:
+            gamemode = 2;
+            break;
 
+            case 2:
+            gamemode = 3;
+            break;
+
+            case 3:
+            gamemode = 4;
+            break;
+        }
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
-                int randomnum = random.nextInt(4) + 1;
-                if (randomnum <= 3) {
+                int randomnum = random.nextInt(5) + 1;
+                if (randomnum <= gamemode) {
                     cover[i][j] = true;
                 } else {
                     cover[i][j] = false;
@@ -339,12 +406,28 @@ public class Play extends JFrame {
             }
         }
         return cover;
+    }    
+
+    public void setSelected(boolean b) {
+        b = true;
     }
 
-    public static void main(String[] args) {
-        new Play();
-        
+    public void saveToFile(int finalScore) {
+        try {
+            File file = new File("savefile.txt");
+
+            PrintWriter printwriter = new PrintWriter(file);
+            printwriter.println(finalScore);
+            printwriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    // public void loadFromFile() {
+
+    // }
 
     public static class ValueExportTransferHandler extends TransferHandler {
 
