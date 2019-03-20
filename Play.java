@@ -1,11 +1,16 @@
 
-
-import java.awt.*; import java.awt.event.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import java.util.Random; import java.util.Map; import java.util.HashMap;
+import java.util.Random; 
+import java.util.Map; 
+import java.util.HashMap;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -18,14 +23,10 @@ public class Play extends JFrame {
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help;
     public JToggleButton hint;
-    public JLabel title_play, timer1, remainingCells;
+    public JLabel title_play, timer1, remainingCells, finalscore_label;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
-
-    private int gamemodepicked;
-    public int gamemode;
-    private int remainingcells, initialcells = 0;
 
     public static final int GRID_SIZE = 9;
     public static final int SUBGRID_SIZE = 3;
@@ -54,6 +55,10 @@ public class Play extends JFrame {
 
     private static int cnt;
     private Timer timer;
+    private int gamemodepicked;
+    public int gamemode;
+    private int remainingcells, initialcells = 0;
+    public int score;
 
     public Play(int gmode) {
 
@@ -67,6 +72,7 @@ public class Play extends JFrame {
         gamemode = 0;
         this.gamemode = gmode;
         mask = maskGenerator();
+
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -93,13 +99,27 @@ public class Play extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 cnt += 1;
-
-                timer1.setText("Timer: " + Integer.toString(cnt));
-                timer1.setBounds(115,100,200,40);
+                if (cnt < 10) {
+                    timer1.setText("Timer: 00:0" + Integer.toString(cnt));
+                }
+                else if (cnt < 60){
+					timer1.setText("Timer: 00:" + Integer.toString(cnt));
+                }
+                else if (cnt % 60 < 10) {
+                    timer1.setText("Timer: " + Integer.toString(cnt/60) + ":0" + Integer.toString(cnt%60));
+                }
+                else if (cnt < 600){
+                    timer1.setText("Timer: 0" + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
+                }
+                else {
+                    timer1.setText("Timer: " + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
+                }
+                
+                timer1.setBounds(50,100,300,40);
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
-        Timer timer = new Timer(1000, actListner);
+        Timer timer = new Timer(500, actListner);
         timer.start();
 
         save = new JMenuItem("Save");
@@ -154,6 +174,11 @@ public class Play extends JFrame {
         hint.setFont(BUTTON_FONTS);
         hint.setBounds(115, 550, 200, 50);
         hint.setSelected(true);
+
+        finalscore_label = new JLabel("Final score: Finish to reveal");
+        finalscore_label.setBounds(50,250,250,40);
+        finalscore_label.setFont(BUTTON_FONTS);
+        finalscore_label.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
 
         hint.addItemListener(new ItemListener() {
 
@@ -213,13 +238,19 @@ public class Play extends JFrame {
                         cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
                         cells[rowPicked][colPicked].setEditable(false);
                         remainingcells--;
+                        score++;
                         remainingCells.setText("Number of remaining boxes: " +remainingcells);
-                        if (remainingcells == 0) {
-                            timer.stop();
-                        }
                     } else {
                         cells[rowPicked][colPicked].setBackground(WRONG_ANSWER);
                         cells[rowPicked][colPicked].setText("");
+                        score--;
+                    }
+                    if (remainingcells == 0) {
+                        timer.stop();
+                        int finalScore = (int)(((double)(score)/(double)(initialcells))*100);
+                        finalscore_label.setText("Your final score is: " + finalScore + "%");
+                        finalscore_label.setVisible(true);
+                        saveToFile(finalScore);
                     }
                 }
 
@@ -323,6 +354,12 @@ public class Play extends JFrame {
                  cells[i][j].setHorizontalAlignment(JTextField.CENTER);
                  cells[i][j].setFont(FONT_NUMBERS);
                  remainingcells = initialcells;
+                 
+            }
+        }
+        for (int c = 0; c < 9; c++) {
+            for (int d = 0; d < 9; d++) {
+                System.out.print(puzzle[c][d]);
             }
         }
 
@@ -332,6 +369,7 @@ public class Play extends JFrame {
         frame.getContentPane().add(help);
         frame.getContentPane().add(hint);
         frame.getContentPane().add(remainingCells);
+        frame.getContentPane().add(finalscore_label);
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(num_panel);
         frame.getContentPane().add(timer1);
@@ -373,6 +411,23 @@ public class Play extends JFrame {
     public void setSelected(boolean b) {
         b = true;
     }
+
+    public void saveToFile(int finalScore) {
+        try {
+            File file = new File("savefile.txt");
+
+            PrintWriter printwriter = new PrintWriter(file);
+            printwriter.println(finalScore);
+            printwriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // public void loadFromFile() {
+
+    // }
 
     public static class ValueExportTransferHandler extends TransferHandler {
 

@@ -114,6 +114,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Play play = new Play(1);
+                
                 frame.setVisible(false);
             }
         });
