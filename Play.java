@@ -2,14 +2,20 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import java.util.Random; 
-import java.util.Map; 
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 import java.awt.datatransfer.DataFlavor;
@@ -24,6 +30,7 @@ public class Play extends JFrame {
     public JButton return_button, help;
     public JToggleButton hint;
     public JLabel title_play, timer1, remainingCells, finalscore_label;
+    public JTextArea highscore_text;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
@@ -59,6 +66,8 @@ public class Play extends JFrame {
     public int gamemode;
     private int remainingcells, initialcells = 0;
     public int score;
+
+    public File file = new File("savefile.txt");
 
     public Play(int gmode) {
 
@@ -135,7 +144,7 @@ public class Play extends JFrame {
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
 
         remainingCells = new JLabel();
-        remainingCells.setBounds(50,200,300,40);
+        remainingCells.setBounds(1100,100,300,40);
         remainingCells.setFont(BUTTON_FONTS);
         remainingCells.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
         remainingCells.setText("Number of remaining boxes: --");
@@ -176,9 +185,18 @@ public class Play extends JFrame {
         hint.setSelected(true);
 
         finalscore_label = new JLabel("Final score: Finish to reveal");
-        finalscore_label.setBounds(50,250,250,40);
+        finalscore_label.setBounds(50,150,250,40);
         finalscore_label.setFont(BUTTON_FONTS);
         finalscore_label.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+
+        highscore_text = new JTextArea();
+        highscore_text.setBounds(50,200,250,200);
+        highscore_text.setFont(BUTTON_FONTS);
+        highscore_text.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
+        highscore_text.setEditable(false);
+        JScrollPane scroller = new JScrollPane(highscore_text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroller.setBounds(50,200,250,200);
+        scroller.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
 
         hint.addItemListener(new ItemListener() {
 
@@ -251,6 +269,7 @@ public class Play extends JFrame {
                         finalscore_label.setText("Your final score is: " + finalScore + "%");
                         finalscore_label.setVisible(true);
                         saveToFile(finalScore);
+                        loadFromFile();
                     }
                 }
 
@@ -370,6 +389,7 @@ public class Play extends JFrame {
         frame.getContentPane().add(hint);
         frame.getContentPane().add(remainingCells);
         frame.getContentPane().add(finalscore_label);
+        frame.getContentPane().add(scroller);
         frame.getContentPane().add(panel1);
         frame.getContentPane().add(num_panel);
         frame.getContentPane().add(timer1);
@@ -399,9 +419,9 @@ public class Play extends JFrame {
             for (int j = 0; j < GRID_SIZE; j++) {
                 int randomnum = random.nextInt(5) + 1;
                 if (randomnum <= gamemode) {
-                    cover[i][j] = true;
-                } else {
                     cover[i][j] = false;
+                } else {
+                    cover[i][j] = true;
                 }
             }
         }
@@ -413,21 +433,40 @@ public class Play extends JFrame {
     }
 
     public void saveToFile(int finalScore) {
-        try {
-            File file = new File("savefile.txt");
+        try (FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)) {
 
-            PrintWriter printwriter = new PrintWriter(file);
-            printwriter.println(finalScore);
-            printwriter.close();
+            out.println(finalScore);
+            out.close();
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // public void loadFromFile() {
+    public void loadFromFile() {
+        try {
+            int token1;
+            Scanner scanner = new Scanner(file);          
+            List<Integer> temps = new ArrayList<Integer>();
+            while (scanner.hasNext()) {
+                token1 = scanner.nextInt();
+                temps.add(token1);
+            }
+            scanner.close();
 
-    // }
+            highscore_text.setText("Scores: \n");
+            for (int s = 0; s < temps.size(); s++) {
+                String label = Integer.toString(temps.get(s));
+                highscore_text.append((s+1) + ") " + label + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static class ValueExportTransferHandler extends TransferHandler {
 
