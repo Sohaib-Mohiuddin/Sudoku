@@ -119,7 +119,7 @@ public class Play extends JFrame {
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
-        Timer timer = new Timer(500, actListner);
+        Timer timer = new Timer(1000, actListner);
         timer.start();
 
         save = new JMenuItem("Save");
