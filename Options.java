@@ -1,11 +1,18 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.sound.*;
+import java.io.*;
 
 
 //@SuppressWarnings("serial")
@@ -33,6 +40,21 @@ public class Options extends JFrame {
     public static final Font MENU_FONTS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font SUBHEADING_FONTS = new Font("Comic Sans MS", Font.BOLD, 30);
+
+    public String gongFile = "src/vine.wav";
+    public File musicPath = new File(gongFile);
+    public AudioInputStream audioInput;
+    public Clip clip;
+    {
+        try {
+            audioInput = AudioSystem.getAudioInputStream(musicPath);
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+        } catch(Exception e) {
+            System.out.println("Boobs");
+            e.printStackTrace();
+        }
+    }
 
     Image img;
 
@@ -117,14 +139,29 @@ public class Options extends JFrame {
         Intermediate.setFont(FONT_BUTTONS);
         Expert.setFont(FONT_BUTTONS);
         Return.setFont(new Font("Comic Sans", Font.BOLD, 30));
-        soundButton.setIcon(new ImageIcon(img2));
+        soundButton.setIcon(new ImageIcon(img));
         soundButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    soundButton.setIcon(new ImageIcon(img));
-                } else {
                     soundButton.setIcon(new ImageIcon(img2));
+                    try {
+                        clip.start();
+                        clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    } catch(Exception ev) {
+                        System.out.println("Not working");
+                        ev.printStackTrace();
+                    }
+
+                } else {
+                    soundButton.setIcon(new ImageIcon(img));
+                    try {
+                        clip.stop();
+                    } catch(Exception ev) {
+                        System.out.println("Not working");
+                        ev.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -182,6 +219,24 @@ public class Options extends JFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    public void playSound() {
+        try {
+            if (musicPath.exists()){
+                //AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+                //Clip clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                clip.start();
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
+
+    }
+
+
 
     public static void main(String[] args) {
         new Options();
