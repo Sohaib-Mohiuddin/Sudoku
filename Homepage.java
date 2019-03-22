@@ -90,7 +90,7 @@ public class Homepage extends JFrame {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Help help = new Help();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
 
@@ -98,7 +98,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Options options = new Options();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         quit.addActionListener(new ActionListener()
@@ -117,7 +117,7 @@ public class Homepage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Play play = new Play(1);
                 
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
 
