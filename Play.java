@@ -65,6 +65,7 @@ public class Play extends JFrame {
     public int gamemode;
     private int remainingcells, initialcells = 0;
     public int score;
+    private String username;
 
     public File file = new File("savefile.txt");
 
@@ -268,7 +269,8 @@ public class Play extends JFrame {
                         int finalScore = (int)(((double)(score)/(double)(initialcells))*100);
                         finalscore_label.setText("Your final score is: " + finalScore + "%");
                         finalscore_label.setVisible(true);
-                        saveToFile(finalScore);
+                        username = JOptionPane.showInputDialog("What is your name?");
+                        saveToFile(username + ":" + finalScore);
                         loadFromFile();
                     }
                 }
@@ -422,9 +424,9 @@ public class Play extends JFrame {
             for (int j = 0; j < GRID_SIZE; j++) {
                 int randomnum = random.nextInt(5) + 1;
                 if (randomnum <= gamemode) {
-                    cover[i][j] = true;
-                } else {
                     cover[i][j] = false;
+                } else {
+                    cover[i][j] = true;
                 }
             }
         }
@@ -435,7 +437,7 @@ public class Play extends JFrame {
         b = true;
     }
 
-    public void saveToFile(int finalScore) {
+    public void saveToFile(String finalScore) {
         try (FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw)) {
@@ -452,18 +454,18 @@ public class Play extends JFrame {
 
     public void loadFromFile() {
         try {
-            int token1;
+            String token1;
             Scanner scanner = new Scanner(file);          
-            List<Integer> temps = new ArrayList<Integer>();
+            List<String> temps = new ArrayList<String>();
             while (scanner.hasNext()) {
-                token1 = scanner.nextInt();
+                token1 = scanner.next();
                 temps.add(token1);
             }
             scanner.close();
 
             highscore_text.setText("Scores: \n");
             for (int s = 0; s < temps.size(); s++) {
-                String label = Integer.toString(temps.get(s));
+                String label = temps.get(s);
                 highscore_text.append((s+1) + ") " + label + "\n");
             }
         } catch (FileNotFoundException e) {
