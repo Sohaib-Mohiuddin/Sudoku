@@ -98,7 +98,6 @@ public class Play extends JFrame {
         this.gamemode = gmode;
         mask = maskGenerator();
 
-
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
         item_options = new JMenuItem("Options");
@@ -123,6 +122,7 @@ public class Play extends JFrame {
          ActionListener actListner = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
+                
                 cnt += 1;
                 if (cnt < 10) {
                     timer1.setText("Timer: 00:0" + Integer.toString(cnt));
@@ -140,12 +140,13 @@ public class Play extends JFrame {
                     timer1.setText("Timer: " + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
                 }
                 
-                timer1.setBounds(50,100,300,40);
+                timer1.setBounds(50,50,250,40);
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
         Timer timer = new Timer(1000, actListner);
         timer.start();
+        
 
         save = new JMenuItem("Save");
         save.setFont(FONT_NUMBERS);
@@ -159,8 +160,8 @@ public class Play extends JFrame {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
 
-        remainingCells = new JLabel();
-        remainingCells.setBounds(1100,100,300,40);
+        remainingCells = new JLabel("", JLabel.CENTER);
+        remainingCells.setBounds(1100,50,300,40);
         remainingCells.setFont(BUTTON_FONTS);
         remainingCells.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
         remainingCells.setText("Number of remaining boxes: --");
@@ -173,18 +174,19 @@ public class Play extends JFrame {
         return_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?" + "\n" + 
-                                                        "You will lose your progress." , "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
+                                                        "You will lose your progress." , "Proceed to Main Menu?", 
+                                                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION)
                 {
-                    new Homepage();
-                    frame.setVisible(false);
+                    Homepage homepage = new Homepage();
+                    frame.dispose();
                 }
             }
         });
 
         help = new JButton("Help");
         help.setFont(BUTTON_FONTS);
-        help.setBounds(115, 450, 200, 50);
+        help.setBounds(50, 450, 200, 50);
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 JOptionPane.showMessageDialog(null, "To play, you first pick a blue box and enter the number you think it is, \n" + 
@@ -198,10 +200,10 @@ public class Play extends JFrame {
 
         hint = new JToggleButton("Hints:ON");
         hint.setFont(BUTTON_FONTS);
-        hint.setBounds(115, 550, 200, 50);
+        hint.setBounds(50, 550, 200, 50);
         hint.setSelected(true);
 
-        finalscore_label = new JLabel("Final score: Finish to reveal");
+        finalscore_label = new JLabel("Final score: Finish to reveal", JLabel.CENTER);
         finalscore_label.setBounds(50,150,250,40);
         finalscore_label.setFont(BUTTON_FONTS);
         finalscore_label.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
@@ -230,7 +232,7 @@ public class Play extends JFrame {
         num_panel = new JPanel();
         num_panel.setBackground(Color.PINK);
         num_panel.setLayout(new GridLayout(3, 3));
-        num_panel.setBounds(1100, 400, CELL_SIZE*3, CELL_SIZE*3);
+        num_panel.setBounds(1200, 400, CELL_SIZE*3, CELL_SIZE*3);
         num_panel.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         panel1 = new JPanel();
@@ -441,9 +443,9 @@ public class Play extends JFrame {
             for (int j = 0; j < GRID_SIZE; j++) {
                 int randomnum = random.nextInt(5) + 1;
                 if (randomnum <= gamemode) {
-                    cover[i][j] = false;
-                } else {
                     cover[i][j] = true;
+                } else {
+                    cover[i][j] = false;
                 }
             }
         }
