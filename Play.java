@@ -1,21 +1,27 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.util.Random; 
-import java.util.Map; 
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.dnd.DnDConstants;
+// import java.awt.datatransfer.DataFlavor;
+// import java.awt.datatransfer.StringSelection;
+// import java.awt.datatransfer.Transferable;
+// import java.awt.dnd.DnDConstants;
 
 public class Play extends JFrame {
 
@@ -23,7 +29,8 @@ public class Play extends JFrame {
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help;
     public JToggleButton hint;
-    public JLabel title_play, timer1, remainingCells, finalscore_label;
+    public JLabel title_play, timer1, remainingCells, finalscore_label, bgimg;
+    public JTextArea highscore_text;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
@@ -59,6 +66,21 @@ public class Play extends JFrame {
     public int gamemode;
     private int remainingcells, initialcells = 0;
     public int score;
+    private String username;
+
+    public File file = new File("savefile.txt");
+
+    Image Background;
+    {
+        try {
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
+    ImageIcon BGIMG = new ImageIcon(Background_image);
 
     public Play(int gmode) {
 
@@ -67,12 +89,14 @@ public class Play extends JFrame {
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+        frame.setResizable(false);
+
+        bgimg = new JLabel("", BGIMG, JLabel.CENTER);
+        bgimg.setBounds(0, 0, 1500, 1000);
 
         gamemode = 0;
         this.gamemode = gmode;
         mask = maskGenerator();
-
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -98,6 +122,7 @@ public class Play extends JFrame {
          ActionListener actListner = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
+                
                 cnt += 1;
                 if (cnt < 10) {
                     timer1.setText("Timer: 00:0" + Integer.toString(cnt));
@@ -115,12 +140,13 @@ public class Play extends JFrame {
                     timer1.setText("Timer: " + Integer.toString(cnt/60) + ":" + Integer.toString(cnt%60));
                 }
                 
-                timer1.setBounds(50,100,300,40);
+                timer1.setBounds(50,50,250,40);
                 timer1.setHorizontalAlignment(JLabel.CENTER);
             }
         };
         Timer timer = new Timer(1000, actListner);
         timer.start();
+        
 
         save = new JMenuItem("Save");
         save.setFont(FONT_NUMBERS);
@@ -134,31 +160,33 @@ public class Play extends JFrame {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
 
-        remainingCells = new JLabel();
-        remainingCells.setBounds(50,200,300,40);
+        remainingCells = new JLabel("", JLabel.CENTER);
+        remainingCells.setBounds(1100,50,300,40);
         remainingCells.setFont(BUTTON_FONTS);
         remainingCells.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
         remainingCells.setText("Number of remaining boxes: --");
 
         return_button = new JButton("Return to Main Menu");
-        return_button.setFont(BUTTON_FONTS);
-        return_button.setBounds(1250, 860, 200, 50);
+        return_button.setFont(new Font("Comic Sans", Font.BOLD, 30));
+        return_button.setBounds(1150, 860, 300, 50);
         return_button.setBackground(BACKGROUND_COLOUR);
         return_button.setBorder(new EmptyBorder(0,0,0,0));
         return_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?", "Proceed to Main Menu?",  JOptionPane.YES_NO_OPTION);
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Main Menu?" + "\n" + 
+                                                        "You will lose your progress." , "Proceed to Main Menu?", 
+                                                        JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION)
                 {
-                    new Homepage();
-                    frame.setVisible(false);
+                    Homepage homepage = new Homepage();
+                    frame.dispose();
                 }
             }
         });
 
         help = new JButton("Help");
         help.setFont(BUTTON_FONTS);
-        help.setBounds(115, 450, 200, 50);
+        help.setBounds(50, 450, 200, 50);
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 JOptionPane.showMessageDialog(null, "To play, you first pick a blue box and enter the number you think it is, \n" + 
@@ -172,13 +200,22 @@ public class Play extends JFrame {
 
         hint = new JToggleButton("Hints:ON");
         hint.setFont(BUTTON_FONTS);
-        hint.setBounds(115, 550, 200, 50);
+        hint.setBounds(50, 550, 200, 50);
         hint.setSelected(true);
 
-        finalscore_label = new JLabel("Final score: Finish to reveal");
-        finalscore_label.setBounds(50,250,250,40);
+        finalscore_label = new JLabel("Final score: Finish to reveal", JLabel.CENTER);
+        finalscore_label.setBounds(50,150,250,40);
         finalscore_label.setFont(BUTTON_FONTS);
         finalscore_label.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+
+        highscore_text = new JTextArea();
+        highscore_text.setBounds(50,200,250,200);
+        highscore_text.setFont(BUTTON_FONTS);
+        highscore_text.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
+        highscore_text.setEditable(false);
+        JScrollPane scroller = new JScrollPane(highscore_text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroller.setBounds(50,200,250,200);
+        scroller.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.black));
 
         hint.addItemListener(new ItemListener() {
 
@@ -195,7 +232,7 @@ public class Play extends JFrame {
         num_panel = new JPanel();
         num_panel.setBackground(Color.PINK);
         num_panel.setLayout(new GridLayout(3, 3));
-        num_panel.setBounds(1100, 400, CELL_SIZE*3, CELL_SIZE*3);
+        num_panel.setBounds(1200, 400, CELL_SIZE*3, CELL_SIZE*3);
         num_panel.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
         panel1 = new JPanel();
@@ -250,7 +287,9 @@ public class Play extends JFrame {
                         int finalScore = (int)(((double)(score)/(double)(initialcells))*100);
                         finalscore_label.setText("Your final score is: " + finalScore + "%");
                         finalscore_label.setVisible(true);
-                        saveToFile(finalScore);
+                        username = JOptionPane.showInputDialog("What is your name?");
+                        saveToFile(username + ":" + finalScore);
+                        loadFromFile();
                     }
                 }
 
@@ -273,11 +312,13 @@ public class Play extends JFrame {
                     for (int j = 0; j < SUBGRID_SIZE && !found_button; ++j) {
                         if(nums[i][j] == button_source) {
                             rowPicked_button = i;
-                            colPicked_button = j;                          
+                            colPicked_button = j;   
                             found_button = true;   
                         }
                     }
                 }
+                int button_user_input = Integer.parseInt(nums[rowPicked_button][colPicked_button].getText());
+                System.out.println(button_user_input);
             }
         };
 
@@ -287,12 +328,13 @@ public class Play extends JFrame {
             for (int j = 0; j < SUBGRID_SIZE; ++j) {
                 nums[i][j] = new JButton(button_numbers + "");
                 nums[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-                
+                nums[i][j].addActionListener(button_action);
+
                 /**
                  * FIXME:
                  * Fix dragging values from number panel
-                 */
-                nums[i][j].addActionListener(button_action);
+                 *
+                 *
                 int button_user_input = Integer.parseInt(nums[i][j].getText());
                 nums[i][j].setTransferHandler(new ValueExportTransferHandler(Integer.toString(button_user_input)));
 
@@ -304,9 +346,10 @@ public class Play extends JFrame {
                         handle.exportAsDrag(button, e, TransferHandler.COPY);
                     }
                 });
+
+                 */
                 button_numbers++;
                 num_panel.add(nums[i][j]);
-
             }
         }
 
@@ -315,7 +358,7 @@ public class Play extends JFrame {
 
                 cells[i][j] = new JTextField();
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
-                cells[i][j].setTransferHandler(new ValueImportTransferHandler());
+                //cells[i][j].setTransferHandler(new ValueImportTransferHandler());
                 cells[i][j].addActionListener(action);
                 
 
@@ -365,14 +408,16 @@ public class Play extends JFrame {
 
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
-        frame.getContentPane().add(return_button);
-        frame.getContentPane().add(help);
-        frame.getContentPane().add(hint);
-        frame.getContentPane().add(remainingCells);
-        frame.getContentPane().add(finalscore_label);
-        frame.getContentPane().add(panel1);
-        frame.getContentPane().add(num_panel);
-        frame.getContentPane().add(timer1);
+        bgimg.add(return_button);
+        bgimg.add(help);
+        bgimg.add(hint);
+        bgimg.add(remainingCells);
+        bgimg.add(finalscore_label);
+        bgimg.add(scroller);
+        bgimg.add(panel1);
+        bgimg.add(num_panel);
+        bgimg.add(timer1);
+        frame.add(bgimg);
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
@@ -381,7 +426,6 @@ public class Play extends JFrame {
     public boolean[][] maskGenerator() {
         Random random = new Random();
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
-        // int difficulty = 0;
         switch(gamemode) {
             case 1:
             gamemode = 2;
@@ -412,23 +456,47 @@ public class Play extends JFrame {
         b = true;
     }
 
-    public void saveToFile(int finalScore) {
-        try {
-            File file = new File("savefile.txt");
+    public void saveToFile(String finalScore) {
+        try (FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)) {
 
-            PrintWriter printwriter = new PrintWriter(file);
-            printwriter.println(finalScore);
-            printwriter.close();
+            out.println(finalScore);
+            out.close();
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // public void loadFromFile() {
+    public void loadFromFile() {
+        try {
+            String token1;
+            Scanner scanner = new Scanner(file);          
+            List<String> temps = new ArrayList<String>();
+            while (scanner.hasNext()) {
+                token1 = scanner.next();
+                temps.add(token1);
+            }
+            scanner.close();
 
-    // }
+            highscore_text.setText("Scores: \n");
+            for (int s = 0; s < temps.size(); s++) {
+                String label = temps.get(s);
+                highscore_text.append((s+1) + ") " + label + "\n");
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * TODO:
+     * fix classes to drag values from num panel in the future
+     * 
+     * 
     public static class ValueExportTransferHandler extends TransferHandler {
 
         public static final DataFlavor SUPPORTED_DATE_FLAVOR = DataFlavor.stringFlavor;
@@ -494,4 +562,7 @@ public class Play extends JFrame {
             return accept;
         }
     }
+    *
+    *
+    **/
 }
