@@ -9,6 +9,8 @@ public class tester {
 
     public File file = new File("savefile2.txt");
     public int[] values;
+    public String username = "sohaib";
+    public int score = 10;
 
     public void saveToFile() {
 
@@ -16,7 +18,7 @@ public class tester {
                 BufferedWriter bw = new BufferedWriter(fw);
                 PrintWriter out = new PrintWriter(bw)) {
 
-            out.println(2);
+            out.println(username + ": " + score);
             out.close();
 
         } catch (FileNotFoundException e) {
@@ -28,11 +30,11 @@ public class tester {
 
     public void loadFromFile() {
         try {
-            int token1;
+            String token1;
             Scanner scanner = new Scanner(file);          
-            List<Integer> temps = new ArrayList<Integer>();
+            List<String> temps = new ArrayList<String>();
             while (scanner.hasNext()) {
-                token1 = scanner.nextInt();
+                token1 = scanner.next();
                 temps.add(token1);
             }
             scanner.close();
@@ -47,7 +49,7 @@ public class tester {
 
     public static void main (String[] args) {
         tester test = new tester();
-        //test.saveToFile();
-        test.loadFromFile();
+        test.saveToFile();
+        //test.loadFromFile();
     }
 }
