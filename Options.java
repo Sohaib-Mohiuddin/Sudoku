@@ -5,6 +5,9 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import java.io.*;
@@ -97,8 +100,11 @@ public class Options extends JFrame {
         bgimg.setBounds(0, 0, 1500, 1000);
 
         pageTitle = new JLabel("Options");
-        pageTitle.setFont(TITLE_FONTS);
         pageTitle.setBounds(550, 100, 400, 70);
+        pageTitle.setFont(TITLE_FONTS);
+        Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        pageTitle.setFont(TITLE_FONTS.deriveFont(attributes));
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -120,7 +126,7 @@ public class Options extends JFrame {
         item_home.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 Homepage homepage = new Homepage();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         menu_file.add(item_home); menu_file.add(item_quit);
@@ -159,7 +165,7 @@ public class Options extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 Homepage homepage = new Homepage();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         Beginner.addActionListener(new ActionListener()
@@ -169,7 +175,7 @@ public class Options extends JFrame {
                 gamemodepicked = 1;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         Intermediate.addActionListener(new ActionListener()
@@ -179,7 +185,7 @@ public class Options extends JFrame {
                 gamemodepicked = 2;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         Expert.addActionListener(new ActionListener()
@@ -189,7 +195,7 @@ public class Options extends JFrame {
                 gamemodepicked = 3;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.setVisible(false);
+                frame.dispose();
             }
         });
         soundButton.addItemListener(new ItemListener() {
