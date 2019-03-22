@@ -1,7 +1,9 @@
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.Random;
 
 //@SuppressWarnings("serial")
@@ -9,7 +11,7 @@ public class Homepage extends JFrame {
 
     public JFrame frame;
     public JButton play, options, help, quit, logout;
-    public JLabel title, label2;
+    public JLabel title, label2 ,bgimg;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem item_options, item_quit;
@@ -21,13 +23,28 @@ public class Homepage extends JFrame {
 
     public static final int GRID_SIZE = 9;
 
+    Image Background;
+    {
+        try {
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
+    ImageIcon BGIMG = new ImageIcon(Background_image);
+
     public Homepage() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Sudoku");
         frame.setLayout(null);
-        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+        frame.setResizable(false);
+        
+        bgimg = new JLabel("", BGIMG, JLabel.CENTER);
+        bgimg.setBounds(0, 0, 1500, 1000);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -105,12 +122,13 @@ public class Homepage extends JFrame {
         });
 
         frame.setJMenuBar(menubar);
-        frame.add(play);
-        frame.add(options);
-        frame.add(help);
-        frame.add(quit);
+        bgimg.add(play);
+        bgimg.add(options);
+        bgimg.add(help);
+        bgimg.add(quit);
         frame.add(title);
         frame.add(label2);
+        frame.add(bgimg);
 
         frame.pack();
         frame.setLocationRelativeTo(null);
