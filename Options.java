@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
 
+import java.io.*;
+import sun.audio.*;
+
 
 //@SuppressWarnings("serial")
 public class Options extends JFrame {
@@ -136,6 +139,18 @@ public class Options extends JFrame {
                 frame.setVisible(false);
             }
         });
+        soundButton.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    soundButton.setText("Sound:ON");
+                    playSound();
+                } else {
+                    soundButton.setText("Sound:OFF");
+                }
+            }
+        });
 
         frame.setJMenuBar(menubar);
         frame.add(pageTitle);
@@ -150,6 +165,20 @@ public class Options extends JFrame {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    public void playSound() {
+        try {
+            String gongFile = "MMusic.wav";
+            InputStream in = new FileInputStream(gongFile);
+
+            AudioStream audioStream = new AudioStream(in);
+
+            AudioPlayer.player.start(audioStream);
+        } catch(Exception ex) {
+            System.out.println("Error with playing sound.");
+            ex.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
