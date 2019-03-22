@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.Random;
@@ -28,7 +29,7 @@ public class Play extends JFrame {
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help;
     public JToggleButton hint;
-    public JLabel title_play, timer1, remainingCells, finalscore_label;
+    public JLabel title_play, timer1, remainingCells, finalscore_label, bgimg;
     public JTextArea highscore_text;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
@@ -69,6 +70,18 @@ public class Play extends JFrame {
 
     public File file = new File("savefile.txt");
 
+    Image Background;
+    {
+        try {
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
+    ImageIcon BGIMG = new ImageIcon(Background_image);
+
     public Play(int gmode) {
 
         frame = new JFrame();
@@ -76,7 +89,10 @@ public class Play extends JFrame {
         frame.setTitle("Play");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+        frame.setResizable(false);
+
+        bgimg = new JLabel("", BGIMG, JLabel.CENTER);
+        bgimg.setBounds(0, 0, 1500, 1000);
 
         gamemode = 0;
         this.gamemode = gmode;
@@ -390,15 +406,16 @@ public class Play extends JFrame {
 
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
-        frame.getContentPane().add(return_button);
-        frame.getContentPane().add(help);
-        frame.getContentPane().add(hint);
-        frame.getContentPane().add(remainingCells);
-        frame.getContentPane().add(finalscore_label);
-        frame.getContentPane().add(scroller);
-        frame.getContentPane().add(panel1);
-        frame.getContentPane().add(num_panel);
-        frame.getContentPane().add(timer1);
+        bgimg.add(return_button);
+        bgimg.add(help);
+        bgimg.add(hint);
+        bgimg.add(remainingCells);
+        bgimg.add(finalscore_label);
+        bgimg.add(scroller);
+        bgimg.add(panel1);
+        bgimg.add(num_panel);
+        bgimg.add(timer1);
+        frame.add(bgimg);
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
