@@ -360,6 +360,7 @@ public class Play extends JFrame {
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
                 //cells[i][j].setTransferHandler(new ValueImportTransferHandler());
                 cells[i][j].addActionListener(action);
+                cells[i][j].addKeyListener(keyListener);
                 
 
                 if (i % 3 == 0 && i != 0){
@@ -491,6 +492,42 @@ public class Play extends JFrame {
             e.printStackTrace();
         }
     }
+    KeyListener keyListener = new KeyListener() {
+        public void keyPressed(KeyEvent keyEvent) {
+
+        }
+
+        public void keyReleased(KeyEvent keyEvent) {
+
+        }
+
+        public void keyTyped(KeyEvent keyEvent) {
+            limit(keyEvent);
+        }
+
+        private void limit(KeyEvent keyEvent) {
+            int rowPicked = -1;
+            int colPicked = -1;
+
+            //Source of the action
+            JTextField source = (JTextField)keyEvent.getSource();
+
+            boolean found = false;
+            for (int row = 0; row < 9 && !found; ++row) {
+                for (int col = 0; col < 9 && !found; ++col) {
+                    if (cells[row][col] == source) {
+                        rowPicked = row;
+                        colPicked = col;
+                        found = true;  //Leaves the loop when found
+                    }
+                }
+            }
+
+            if (cells[rowPicked][colPicked].getText().length() >= 1) // limit textField to 1 character
+                keyEvent.consume();
+        }
+
+    };
 
     /**
      * TODO:
