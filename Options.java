@@ -1,31 +1,96 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 
 
 //@SuppressWarnings("serial")
-public class Options extends JFrame{
+public class Options extends JFrame {
 
     public JFrame frame;
     public JButton Beginner, Intermediate, Expert, Return;
     public JToggleButton soundButton;
-    public JLabel modeLabel, soundLabel;
-    public JMenuBar menu;
+    public JLabel pageTitle, modeLabel, soundLabel;
+    public JMenuBar menubar;
+    public JMenu menu_file, submenu;
+    public JMenuItem item_home, item_quit;
 
-    public Options() {
-        Gui();
+    private int gamemodepicked;
+    public int gmode;
+    private Play start;
+
+    public static final int GRID_SIZE = 9;
+
+    //private boolean[][] mask = maskGenerator();
+
+    public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
+
+    public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
+    public static final Font MENU_FONTS = new Font("Comic Sans MS", Font.BOLD, 20);
+    public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
+    public static final Font SUBHEADING_FONTS = new Font("Comic Sans MS", Font.BOLD, 30);
+
+    Image img;
+
+    {
+        try {
+            img = ImageIO.read(getClass().getResource("noo.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void Gui() {
+    Image img2;
+
+    {
+        try {
+            img2 = ImageIO.read(getClass().getResource("images.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Options() {
         frame = new JFrame();
-        frame.setPreferredSize(new Dimension(1000, 1000));
-        frame.setLocationRelativeTo(null);
+        frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Options");
-        frame.setVisible(true);
         frame.setLayout(null);
-        frame.getContentPane().setBackground(Color.CYAN);
+        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
 
+        pageTitle = new JLabel("Options");
+        pageTitle.setFont(TITLE_FONTS);
+        pageTitle.setBounds(550, 100, 400, 70);
+
+        menubar = new JMenuBar();
+        menu_file = new JMenu("File");
+        item_home = new JMenuItem("Home");
+        item_quit = new JMenuItem("Quit");
+        menu_file.setFont(MENU_FONTS);
+        item_home.setFont(MENU_FONTS);
+        item_quit.setFont(MENU_FONTS);
+        
+        item_quit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
+        item_home.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                Homepage homepage = new Homepage();
+                frame.setVisible(false);
+            }
+        });
+        menu_file.add(item_home); menu_file.add(item_quit);
+        menubar.add(menu_file);
 
         Beginner = new JButton("Beginner (Kouhai)");
         Intermediate = new JButton("Intermediate (Senpai)");
@@ -34,28 +99,77 @@ public class Options extends JFrame{
         soundButton = new JToggleButton("ON/OFF");
 
         modeLabel = new JLabel("Mode:");
-        modeLabel.setFont(new Font("Comic Sans", Font.BOLD, 30));
+        modeLabel.setFont(SUBHEADING_FONTS);
         modeLabel.setBounds(100, 200, 300, 120);
         soundLabel = new JLabel("Sound:");
-        soundLabel.setFont(new Font("Comic Sans", Font.BOLD, 30));
+        soundLabel.setFont(SUBHEADING_FONTS);
         soundLabel.setBounds(700, 200, 300, 120);
 
-        Beginner.setBounds(70, 300, 160, 40);
-        Intermediate.setBounds(70, 360, 160, 40);
-        Expert.setBounds(70, 420, 160, 40);
-        Return.setBounds(833,920,160,40);
-        soundButton.setBounds(700, 300, 160, 40);
+        Beginner.setBounds(100, 300, 250, 50);
+        Intermediate.setBounds(100, 360, 250, 50);
+        Expert.setBounds(100, 420, 250, 50);
+        Return.setBounds(1250, 860, 250, 50);
+        Return.setBackground(BACKGROUND_COLOUR);
+        Return.setBorder(new EmptyBorder(0,0,0,0));
+        soundButton.setBounds(700, 300, 150, 150);
+
+        Beginner.setFont(FONT_BUTTONS);
+        Intermediate.setFont(FONT_BUTTONS);
+        Expert.setFont(FONT_BUTTONS);
+        Return.setFont(new Font("Comic Sans", Font.BOLD, 30));
+        soundButton.setIcon(new ImageIcon(img2));
+        soundButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    soundButton.setIcon(new ImageIcon(img));
+                } else {
+                    soundButton.setIcon(new ImageIcon(img2));
+                }
+            }
+        });
 
         Return.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
                 Homepage homepage = new Homepage();
-
+                frame.setVisible(false);
+            }
+        });
+        Beginner.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                gamemodepicked = 1;
+                Play play = new Play(gamemodepicked);
+                play.maskGenerator();
+                frame.setVisible(false);
+            }
+        });
+        Intermediate.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                gamemodepicked = 2;
+                Play play = new Play(gamemodepicked);
+                play.maskGenerator();
+                frame.setVisible(false);
+            }
+        });
+        Expert.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                gamemodepicked = 3;
+                Play play = new Play(gamemodepicked);
+                play.maskGenerator();
                 frame.setVisible(false);
             }
         });
 
+        frame.setJMenuBar(menubar);
+        frame.add(pageTitle);
         frame.add(Beginner);
         frame.add(Intermediate);
         frame.add(Expert);
@@ -64,13 +178,9 @@ public class Options extends JFrame{
         frame.add(Return);
         frame.add(soundButton);
 
-
-
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
-
     }
 
     public static void main(String[] args) {
