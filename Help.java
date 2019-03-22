@@ -1,15 +1,17 @@
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class Help extends JFrame {
 
     public JFrame frame;
     public JButton returnButton, button6;
-    public JLabel pageTitle, line1, line2, line3, line4, line5, line6;
+    public JLabel pageTitle, line1, line2, line3, line4, line5, line6, bgimg;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem item_home, item_quit;
@@ -19,13 +21,28 @@ public class Help extends JFrame {
     public static final Font FONT_HELP = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
+    Image Background;
+    {
+        try {
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
+    ImageIcon BGIMG = new ImageIcon(Background_image);
+
     public Help() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Help");
         frame.setLayout(null);
-        frame.getContentPane().setBackground(BACKGROUND_COLOUR);
+        frame.setResizable(false);
+
+        bgimg = new JLabel("", BGIMG, JLabel.CENTER);
+        bgimg.setBounds(0, 0, 1500, 1000);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -88,9 +105,15 @@ public class Help extends JFrame {
         line4.setFont(FONT_HELP); line5.setFont(FONT_HELP); line6.setFont(FONT_HELP);
 
         frame.setJMenuBar(menubar);
-        frame.add(returnButton);
+        bgimg.add(returnButton);
         frame.add(pageTitle);
-        frame.add(line1); frame.add(line2); frame.add(line3); frame.add(line4); frame.add(line5); frame.add(line6);
+        bgimg.add(line1); 
+        bgimg.add(line2); 
+        bgimg.add(line3); 
+        bgimg.add(line4); 
+        bgimg.add(line5); 
+        bgimg.add(line6);
+        frame.add(bgimg);
  
         frame.pack();
         frame.setVisible(true);
