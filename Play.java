@@ -18,11 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-// import java.awt.datatransfer.DataFlavor;
-// import java.awt.datatransfer.StringSelection;
-// import java.awt.datatransfer.Transferable;
-// import java.awt.dnd.DnDConstants;
-
 public class Play extends JFrame {
 
     public JFrame frame;
@@ -138,22 +133,30 @@ public class Play extends JFrame {
         });
         item_options.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Options?" + "\n" + 
-                                                        "You will lose your progress." , "Proceed to Options?", 
-                                                        JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION)
-                {
-                    if (Options.clip.isRunning()) {
-                        
-                        Options.soundButton.setSelected(true);
+                
+                    if (Options.frame == null) {
+                        new Options();
+                        Options.Beginner.setVisible(false);
+                        Options.Intermediate.setVisible(false);
+                        Options.Expert.setVisible(false);
+                        Options.modeLabel.setVisible(false);
+                        Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        Options.frame.setVisible(true);
                     } else {
-                        
-                        Options.soundButton.setSelected(false);
+                        if (Options.clip.isRunning()) {
+                            Options.soundButton.setSelected(true);
+                        } else {
+                            Options.soundButton.setSelected(false);
+                        }
+                        Options.Beginner.setVisible(false);
+                        Options.Intermediate.setVisible(false);
+                        Options.Expert.setVisible(false);
+                        Options.modeLabel.setVisible(false);
+                        Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                        Options.frame.setVisible(true);
                     }
-                    Options.frame.setVisible(true);
-                    //frame.setVisible(false);
+                    
                 }
-            }
         });
 
         timer1 = new JLabel();
@@ -259,13 +262,14 @@ public class Play extends JFrame {
         sound = new JToggleButton();
         sound.setFont(BUTTON_FONTS);
         sound.setBounds(50, 650, 128, 128);
-        if (Options.clip.isRunning()) {
-            sound.setIcon(new ImageIcon(speakerOnImage));
-            sound.setSelected(true);
-        } else {
-            sound.setIcon(new ImageIcon(speakerOffImage));
-            sound.setSelected(false);
-        }
+        // if (Options.clip.isRunning()) {
+        //     sound.setIcon(new ImageIcon(speakerOnImage));
+        //     sound.setSelected(true);
+        // } else {
+        //     sound.setIcon(new ImageIcon(speakerOffImage));
+        //     sound.setSelected(false);
+        // }
+        sound.setIcon(new ImageIcon(speakerOffImage));
         
 
         finalscore_label = new JLabel("Final score: Finish to reveal", JLabel.CENTER);
@@ -296,6 +300,8 @@ public class Play extends JFrame {
         sound.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
+                new Options();
+                Options.frame.setVisible(false);
                 if (e.getStateChange() == ItemEvent.SELECTED && Options.clip.isRunning()) {
                     sound.setIcon(new ImageIcon(speakerOnImage));
                     Options.soundButton.setSelected(true);
@@ -480,7 +486,7 @@ public class Play extends JFrame {
                         }
                     }
                     cells[i][j].setEditable(false);
-                    cells[i][j].setBackground(Color.LIGHT_GRAY);
+                    cells[i][j].setBackground(Color.white);
                     cells[i][j].setForeground(new Color(0, 0, 153));
                  }
 

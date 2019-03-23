@@ -116,7 +116,7 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] options = new String[] {"Beginner", "Intermediate", "Maybe", "Cancel"};
+                String[] options = new String[] {"Beginner", "Intermediate", "Expert", "Cancel"};
                 int response = JOptionPane.showOptionDialog(null, "Which mode would you like to play on?", "Select Mode", 
                                                             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, 
                                                             options, options[3]);

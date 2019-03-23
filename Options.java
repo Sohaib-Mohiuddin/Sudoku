@@ -19,9 +19,10 @@ import javax.sound.sampled.Clip;
 public class Options extends JFrame {
 
     public static JFrame frame;
-    public JButton Beginner, Intermediate, Expert, Return;
+    public static JButton Beginner, Intermediate, Expert, Return;
     public static JToggleButton soundButton;
-    public JLabel pageTitle, modeLabel, soundLabel, bgimg;
+    public JLabel pageTitle, soundLabel, bgimg;
+    public static JLabel modeLabel;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem item_home, item_quit;
@@ -87,12 +88,11 @@ public class Options extends JFrame {
     public Options() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Options");
         frame.setLayout(null);
         frame.setResizable(false);
         
-
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
 
