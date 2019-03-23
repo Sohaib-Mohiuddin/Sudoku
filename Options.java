@@ -8,21 +8,19 @@ import java.awt.event.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import java.io.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import sun.audio.*;
 
 
 //@SuppressWarnings("serial")
 public class Options extends JFrame {
 
-    public JFrame frame;
+    public static JFrame frame;
     public JButton Beginner, Intermediate, Expert, Return;
-    public JToggleButton soundButton;
+    public static JToggleButton soundButton;
     public JLabel pageTitle, modeLabel, soundLabel, bgimg;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
@@ -30,7 +28,6 @@ public class Options extends JFrame {
 
     private int gamemodepicked;
     public int gmode;
-    private Play start;
 
     public static final int GRID_SIZE = 9;
 
@@ -46,7 +43,7 @@ public class Options extends JFrame {
     public String gongFile = "Resources/Music.wav";
     public File musicPath = new File(gongFile);
     public AudioInputStream audioInput;
-    public Clip clip;
+    public static Clip clip;
     {
         try {
             audioInput = AudioSystem.getAudioInputStream(musicPath);
@@ -90,7 +87,7 @@ public class Options extends JFrame {
     public Options() {
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setTitle("Options");
         frame.setLayout(null);
         frame.setResizable(false);
@@ -126,7 +123,7 @@ public class Options extends JFrame {
         item_home.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 Homepage homepage = new Homepage();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         menu_file.add(item_home); menu_file.add(item_quit);
@@ -152,7 +149,13 @@ public class Options extends JFrame {
         Return.setBackground(BACKGROUND_COLOUR);
         Return.setBorder(new EmptyBorder(0,0,0,0));
         soundButton.setBounds(700, 300, 150, 150);
-        soundButton.setIcon(new ImageIcon(img));
+        if (clip.isRunning()) {
+            soundButton.setIcon(new ImageIcon(img2));
+            soundButton.setSelected(true);
+        } else {
+            soundButton.setIcon(new ImageIcon(img));
+            soundButton.setSelected(false);
+        }
 
         Beginner.setFont(FONT_BUTTONS);
         Intermediate.setFont(FONT_BUTTONS);
@@ -165,7 +168,7 @@ public class Options extends JFrame {
             public void actionPerformed(ActionEvent e)
             {
                 Homepage homepage = new Homepage();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         Beginner.addActionListener(new ActionListener()
@@ -175,7 +178,7 @@ public class Options extends JFrame {
                 gamemodepicked = 1;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         Intermediate.addActionListener(new ActionListener()
@@ -185,7 +188,7 @@ public class Options extends JFrame {
                 gamemodepicked = 2;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         Expert.addActionListener(new ActionListener()
@@ -195,29 +198,29 @@ public class Options extends JFrame {
                 gamemodepicked = 3;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         soundButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
+                if (e.getStateChange() == ItemEvent.SELECTED && clip.isRunning()) {
                     soundButton.setIcon(new ImageIcon(img2));
-                    try {
-                        clip.start();
-                        clip.loop(Clip.LOOP_CONTINUOUSLY);
-                    } catch(Exception ev) {
-                        System.out.println("Not working");
-                        ev.printStackTrace();
-                    }
-                } else {
+                    Play.sound.setSelected(true);
+                } 
+                else if (e.getStateChange() == ItemEvent.SELECTED && !clip.isRunning()) {
+                    soundButton.setIcon(new ImageIcon(img2));
+                    //Play.sound.setSelected(true);
+                    playSound();
+                }
+                else if (e.getStateChange() == ItemEvent.DESELECTED && clip.isRunning()) {
                     soundButton.setIcon(new ImageIcon(img));
-                    try {
-                        clip.stop();
-                    } catch(Exception ev) {
-                        System.out.println("Not working");
-                        ev.printStackTrace();
-                    }
+                    Play.sound.setSelected(false);
+                    stopSound();
+                } 
+                else if (e.getStateChange() == ItemEvent.DESELECTED && !clip.isRunning()) {
+                    soundButton.setIcon(new ImageIcon(img));
+                    Play.sound.setSelected(false);
                 }
             }
         });
@@ -239,13 +242,10 @@ public class Options extends JFrame {
         frame.setVisible(true);
     }
 
-    public void playSound() {
+    public static void playSound() {
         try {
-            if (musicPath.exists()){
-                clip.open(audioInput);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
 
         } catch(Exception ex) {
             System.out.println("Error with playing sound.");
@@ -253,29 +253,11 @@ public class Options extends JFrame {
         }
         
     }
+    public static void stopSound() {
+        clip.stop();   
+    }
 
     public static void main(String[] args) {
         new Options();
     }
 }
-// class ContentPanel extends JPanel {
-//     Image bgimage = null;
-  
-//     ContentPanel() {
-//       MediaTracker mt = new MediaTracker(this);
-//       bgimage = Toolkit.getDefaultToolkit().getImage("Resources/background_image.png");
-//       mt.addImage(bgimage, 0);
-//       try {
-//         mt.waitForAll();
-//       } catch (InterruptedException e) {
-//         e.printStackTrace();
-//       }
-//     }
-  
-//     protected void paintComponent(Graphics g) {
-//       super.paintComponent(g);
-//       int imwidth = bgimage.getWidth(null);
-//       int imheight = bgimage.getHeight(1000);
-//       g.drawImage(bgimage, 1, 1, null);
-//     }
-//   }

@@ -29,6 +29,7 @@ public class Play extends JFrame {
     public JPanel panel1, num_panel, timer_panel;
     public JButton return_button, help;
     public JToggleButton hint;
+    public static JToggleButton sound;
     public JLabel title_play, timer1, remainingCells, finalscore_label, bgimg;
     public JTextArea highscore_text;
     public JMenuBar menubar;
@@ -42,7 +43,7 @@ public class Play extends JFrame {
     public static final Color RIGHT_ANSWER = Color.GREEN;
     public static final Color WRONG_ANSWER = Color.RED;
     public static final Color UNCLICKED_BOX = Color.white;
-    public static final Color CLICKED_BOX = Color.CYAN;
+    public static final Color CLICKED_BOX = new Color(100, 100, 255);
     public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
     public static final Font FONT_NUMBERS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font BUTTON_FONTS = new Font("Comic Sans MS", Font.BOLD, 15);
@@ -69,6 +70,25 @@ public class Play extends JFrame {
     private String username;
 
     public File file = new File("savefile.txt");
+    
+    Image musicOn;
+    {
+        try {
+            musicOn = ImageIO.read(getClass().getResource("Resources/speaker.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    Image MusicOff;
+    {
+        try {
+            MusicOff = ImageIO.read(getClass().getResource("Resources/speaker_off.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    Image speakerOnImage = musicOn.getScaledInstance(128, 128, Image.SCALE_DEFAULT);
+    Image speakerOffImage = MusicOff.getScaledInstance(128, 128, Image.SCALE_DEFAULT);
 
     Image Background;
     {
@@ -90,6 +110,7 @@ public class Play extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.setResizable(false);
+        
 
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
@@ -115,14 +136,35 @@ public class Play extends JFrame {
                 }
             }
         });
+        item_options.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to go to Options?" + "\n" + 
+                                                        "You will lose your progress." , "Proceed to Options?", 
+                                                        JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION)
+                {
+                    if (Options.clip.isRunning()) {
+                        
+                        Options.soundButton.setSelected(true);
+                    } else {
+                        
+                        Options.soundButton.setSelected(false);
+                    }
+                    Options.frame.setVisible(true);
+                    //frame.setVisible(false);
+                }
+            }
+        });
 
         timer1 = new JLabel();
         timer1.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
         timer1.setBorder(BorderFactory.createMatteBorder(4,4,4,4,Color.black));
+        
          ActionListener actListner = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 
+                //cnt = 0;
                 cnt += 1;
                 if (cnt < 10) {
                     timer1.setText("Timer: 00:0" + Integer.toString(cnt));
@@ -146,6 +188,13 @@ public class Play extends JFrame {
         };
         Timer timer = new Timer(1000, actListner);
         timer.start();
+        //timer.setRepeats(false);
+        // if (timer.isRunning()) {
+        //     timer.stop();
+        //     cnt = 0;
+        //     timer.restart();
+        // }
+        
         
 
         save = new JMenuItem("Save");
@@ -178,8 +227,12 @@ public class Play extends JFrame {
                                                         JOptionPane.YES_NO_OPTION);
                 if (reply == JOptionPane.YES_OPTION)
                 {
+                    cnt = 0;
+                    timer.stop();
+                    timer.restart();
+                    
                     Homepage homepage = new Homepage();
-                    frame.dispose();
+                    frame.setVisible(false);
                 }
             }
         });
@@ -203,6 +256,18 @@ public class Play extends JFrame {
         hint.setBounds(50, 550, 200, 50);
         hint.setSelected(true);
 
+        sound = new JToggleButton();
+        sound.setFont(BUTTON_FONTS);
+        sound.setBounds(50, 650, 128, 128);
+        if (Options.clip.isRunning()) {
+            sound.setIcon(new ImageIcon(speakerOnImage));
+            sound.setSelected(true);
+        } else {
+            sound.setIcon(new ImageIcon(speakerOffImage));
+            sound.setSelected(false);
+        }
+        
+
         finalscore_label = new JLabel("Final score: Finish to reveal", JLabel.CENTER);
         finalscore_label.setBounds(50,150,250,40);
         finalscore_label.setFont(BUTTON_FONTS);
@@ -225,6 +290,29 @@ public class Play extends JFrame {
                     hint.setText("Hints:ON");
                 } else {
                     hint.setText("Hints:OFF");
+                }
+            }
+        });
+        sound.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED && Options.clip.isRunning()) {
+                    sound.setIcon(new ImageIcon(speakerOnImage));
+                    Options.soundButton.setSelected(true);
+                } 
+                else if (e.getStateChange() == ItemEvent.SELECTED && !Options.clip.isRunning()) {
+                    sound.setIcon(new ImageIcon(speakerOnImage));
+                    Options.soundButton.setSelected(true);
+                    Options.playSound();
+                }
+                else if (e.getStateChange() == ItemEvent.DESELECTED && Options.clip.isRunning()) {
+                    sound.setIcon(new ImageIcon(speakerOffImage));
+                    Options.soundButton.setSelected(false);
+                    Options.stopSound();
+                } 
+                else if (e.getStateChange() == ItemEvent.DESELECTED && !Options.clip.isRunning()) {
+                    sound.setIcon(new ImageIcon(speakerOffImage));
+                    Options.soundButton.setSelected(false);
                 }
             }
         });
@@ -273,6 +361,7 @@ public class Play extends JFrame {
                 if(hint.isSelected()) {
                     if (user_input == puzzle[rowPicked][colPicked]) {
                         cells[rowPicked][colPicked].setBackground(RIGHT_ANSWER);
+                        cells[rowPicked][colPicked].setForeground(new Color(0, 0, 153));
                         cells[rowPicked][colPicked].setEditable(false);
                         remainingcells--;
                         score++;
@@ -379,7 +468,8 @@ public class Play extends JFrame {
                     cells[i][j].setText("");
                     cells[i][j].setEditable(true);
                     cells[i][j].setBackground(CLICKED_BOX);
-                    cells[i][j].setForeground(new Color(0, 0, 153));
+                    //cells[i][j].setForeground(new Color(0, 0, 153));
+                    cells[i][j].setForeground(new Color(255, 255, 255));
                     initialcells++;
                     
                  } else {
@@ -401,17 +491,18 @@ public class Play extends JFrame {
                  
             }
         }
-        for (int c = 0; c < 9; c++) {
-            for (int d = 0; d < 9; d++) {
-                System.out.print(puzzle[c][d]);
-            }
-        }
+        // for (int c = 0; c < 9; c++) {
+        //     for (int d = 0; d < 9; d++) {
+        //         System.out.print(puzzle[c][d]);
+        //     }
+        // }
 
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
         bgimg.add(return_button);
         bgimg.add(help);
         bgimg.add(hint);
+        bgimg.add(sound);
         bgimg.add(remainingCells);
         bgimg.add(finalscore_label);
         bgimg.add(scroller);
@@ -494,11 +585,8 @@ public class Play extends JFrame {
     }
     KeyListener keyListener = new KeyListener() {
         public void keyPressed(KeyEvent keyEvent) {
-
         }
-
         public void keyReleased(KeyEvent keyEvent) {
-
         }
 
         public void keyTyped(KeyEvent keyEvent) {
@@ -523,7 +611,8 @@ public class Play extends JFrame {
                 }
             }
 
-            if (cells[rowPicked][colPicked].getText().length() >= 1) // limit textField to 1 character
+            char c = keyEvent.getKeyChar();
+            if (cells[rowPicked][colPicked].getText().length() >= 1 || Character.isAlphabetic(c)) // limit textField to 1 character
                 keyEvent.consume();
         }
 

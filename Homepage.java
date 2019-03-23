@@ -22,6 +22,7 @@ public class Homepage extends JFrame {
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public static final int GRID_SIZE = 9;
+    private int gamemodepicked;
 
     Image Background;
     {
@@ -90,7 +91,7 @@ public class Homepage extends JFrame {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Help help = new Help();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
 
@@ -98,7 +99,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Options options = new Options();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         quit.addActionListener(new ActionListener()
@@ -115,9 +116,28 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Play play = new Play(1);
-                
-                frame.dispose();
+                String[] options = new String[] {"Beginner", "Intermediate", "Maybe", "Cancel"};
+                int response = JOptionPane.showOptionDialog(null, "Which mode would you like to play on?", "Select Mode", 
+                                                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, 
+                                                            options, options[3]);
+                if (response == 0) {
+                    gamemodepicked = 1;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                } 
+                else if (response == 1) {
+                    gamemodepicked = 2;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                }
+                else if (response == 2) {
+                    gamemodepicked = 3;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                }
             }
         });
 

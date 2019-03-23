@@ -64,7 +64,7 @@ public class Help extends JFrame {
         item_home.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 Homepage homepage = new Homepage();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         menu_file.add(item_quit); menu_file.add(item_home);
@@ -83,7 +83,7 @@ public class Help extends JFrame {
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Homepage homepage = new Homepage();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
 
