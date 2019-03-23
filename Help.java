@@ -1,4 +1,16 @@
+/**
+ * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Version 1
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * Help.java 
+ * This class is the Help page where instructions on how to play the game are shown to the user.
+ */
 
+ //imports for Help.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,10 +29,10 @@ public class Help extends JFrame {
     public JMenuItem item_home, item_quit;
 
     public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
-
     public static final Font FONT_HELP = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
+    //Getting the background image for the JFrame from the Resources folder
     Image Background;
     {
         try {
@@ -29,7 +41,6 @@ public class Help extends JFrame {
             e.printStackTrace();
         }
     }
-    
     Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
     ImageIcon BGIMG = new ImageIcon(Background_image);
 

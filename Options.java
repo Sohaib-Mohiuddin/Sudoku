@@ -1,4 +1,17 @@
+/**
+ * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Version 1
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * Options.java 
+ * This class is the options page where you have access to which difficulty you would like to play as well as the option to turn 
+ * music on and off at user discretion
+ */
 
+ //imports for Options.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -73,6 +86,8 @@ public class Options extends JFrame {
             e.printStackTrace();
         }
     }
+
+    //Getting the background image for the JFrame from the Resources folder
     Image Background;
     {
         try {

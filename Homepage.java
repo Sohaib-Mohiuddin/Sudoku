@@ -1,4 +1,16 @@
+/**
+ * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Version 1
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * Homepage.java 
+ * This class is the homepage page where the user starts and have access to options, help and quit. 
+ */
 
+ //imports for Homepage.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +18,6 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.Random;
 
-//@SuppressWarnings("serial")
 public class Homepage extends JFrame {
 
     public JFrame frame;
@@ -24,6 +35,7 @@ public class Homepage extends JFrame {
     public static final int GRID_SIZE = 9;
     private int gamemodepicked;
 
+    //Getting the background image for the JFrame from the Resources folder
     Image Background;
     {
         try {
@@ -116,7 +128,7 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] options = new String[] {"Beginner", "Intermediate", "Expert", "Cancel"};
+                /*String[] options = new String[] {"Beginner", "Intermediate", "Expert", "Cancel"};
                 int response = JOptionPane.showOptionDialog(null, "Which mode would you like to play on?", "Select Mode", 
                                                             JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, 
                                                             options, options[3]);
@@ -136,6 +148,18 @@ public class Homepage extends JFrame {
                     gamemodepicked = 3;
                     Play play = new Play(gamemodepicked);
                     play.maskGenerator();
+                    frame.setVisible(false);
+                }*/
+                if (Options.frame == null) {
+                    new Options();
+                    frame.setVisible(false);
+                } else {
+                    Options.Beginner.setVisible(true);
+                    Options.Intermediate.setVisible(true);
+                    Options.Expert.setVisible(true);
+                    Options.modeLabel.setVisible(true);
+                    Options.frame.setVisible(true);
+                    Options.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setVisible(false);
                 }
             }

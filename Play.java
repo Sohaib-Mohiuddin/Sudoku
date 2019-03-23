@@ -1,3 +1,18 @@
+/**
+ * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Version 1
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * Play.java 
+ * This class is the play page where the sudoku game occurs. The user is shown how many remaining boxes are there to fill, a highscore 
+ * list for when the game is finished, a timer for the user to know how long the game has been going on for, [a number panel to drag
+ * values into the sudoku board(IN PROGRESS)] and buttons for music, hints, help and return to main menu. 
+ */
+
+ //imports for Play.java to work
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
@@ -85,6 +100,7 @@ public class Play extends JFrame {
     Image speakerOnImage = musicOn.getScaledInstance(128, 128, Image.SCALE_DEFAULT);
     Image speakerOffImage = MusicOff.getScaledInstance(128, 128, Image.SCALE_DEFAULT);
 
+    //Getting the background image for the JFrame from the Resources folder
     Image Background;
     {
         try {
@@ -134,29 +150,29 @@ public class Play extends JFrame {
         item_options.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 
-                    if (Options.frame == null) {
-                        new Options();
-                        Options.Beginner.setVisible(false);
-                        Options.Intermediate.setVisible(false);
-                        Options.Expert.setVisible(false);
-                        Options.modeLabel.setVisible(false);
-                        Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                        Options.frame.setVisible(true);
+                if (Options.frame == null) {
+                    new Options();
+                    Options.Beginner.setVisible(false);
+                    Options.Intermediate.setVisible(false);
+                    Options.Expert.setVisible(false);
+                    Options.modeLabel.setVisible(false);
+                    Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    Options.frame.setVisible(true);
+                } else {
+                    if (Options.clip.isRunning()) {
+                        Options.soundButton.setSelected(true);
                     } else {
-                        if (Options.clip.isRunning()) {
-                            Options.soundButton.setSelected(true);
-                        } else {
-                            Options.soundButton.setSelected(false);
-                        }
-                        Options.Beginner.setVisible(false);
-                        Options.Intermediate.setVisible(false);
-                        Options.Expert.setVisible(false);
-                        Options.modeLabel.setVisible(false);
-                        Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-                        Options.frame.setVisible(true);
+                        Options.soundButton.setSelected(false);
                     }
-                    
+                    Options.Beginner.setVisible(false);
+                    Options.Intermediate.setVisible(false);
+                    Options.Expert.setVisible(false);
+                    Options.modeLabel.setVisible(false);
+                    Options.frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                    Options.frame.setVisible(true);
                 }
+                    
+            }
         });
 
         timer1 = new JLabel();
@@ -191,14 +207,6 @@ public class Play extends JFrame {
         };
         Timer timer = new Timer(1000, actListner);
         timer.start();
-        //timer.setRepeats(false);
-        // if (timer.isRunning()) {
-        //     timer.stop();
-        //     cnt = 0;
-        //     timer.restart();
-        // }
-        
-        
 
         save = new JMenuItem("Save");
         save.setFont(FONT_NUMBERS);
@@ -262,13 +270,7 @@ public class Play extends JFrame {
         sound = new JToggleButton();
         sound.setFont(BUTTON_FONTS);
         sound.setBounds(50, 650, 128, 128);
-        // if (Options.clip.isRunning()) {
-        //     sound.setIcon(new ImageIcon(speakerOnImage));
-        //     sound.setSelected(true);
-        // } else {
-        //     sound.setIcon(new ImageIcon(speakerOffImage));
-        //     sound.setSelected(false);
-        // }
+        
         sound.setIcon(new ImageIcon(speakerOffImage));
         
 
@@ -383,7 +385,7 @@ public class Play extends JFrame {
                         finalscore_label.setText("Your final score is: " + finalScore + "%");
                         finalscore_label.setVisible(true);
                         username = JOptionPane.showInputDialog("What is your name?");
-                        saveToFile(username + ":" + finalScore);
+                        saveToFile(""+finalScore);
                         loadFromFile();
                     }
                 }
