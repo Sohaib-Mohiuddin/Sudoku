@@ -10,13 +10,18 @@
  * This class is the homepage page where the user starts and have access to options, help and quit. 
  */
 
- //imports for Homepage.java to work
+//imports for Homepage.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.BasicBorders;
 
 public class Homepage extends JFrame {
 
@@ -83,6 +88,11 @@ public class Homepage extends JFrame {
         help = new JButton("Help");
         quit = new JButton("Quit");
 
+        play.setBorder(new RoundedBorder(50));
+        options.setBorder(new RoundedBorder(50));
+        help.setBorder(new RoundedBorder(50));
+        quit.setBorder(new RoundedBorder(50));
+
         play.setBounds(560, 420, 200, 50);
         options.setBounds(560, 480, 200, 50);
         help.setBounds(770, 420, 200, 50);
@@ -94,8 +104,11 @@ public class Homepage extends JFrame {
         quit.setFont(FONT_BUTTONS);
 
         title = new JLabel("Welcome to Sudoku-sama");
-        title.setFont(new Font("Comic Sans", Font.BOLD, 30));
-        title.setBounds(580, 100, 400, 70);
+        title.setBounds(460, 100, 700, 70);
+        title.setFont(TITLE_FONTS);
+        Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        title.setFont(TITLE_FONTS.deriveFont(attributes));
 
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
@@ -183,5 +196,25 @@ public class Homepage extends JFrame {
         Homepage homepage = new Homepage();
     }
 
+    private static class RoundedBorder implements Border {
 
+        private int radius;
+
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+    
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+        }
+    
+        public boolean isBorderOpaque() {
+            return true;
+        }
+    
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+        }
+    }
 }
+

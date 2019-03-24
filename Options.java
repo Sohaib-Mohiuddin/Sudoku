@@ -34,7 +34,7 @@ public class Options extends JFrame {
     public static JFrame frame;
     public static JButton Beginner, Intermediate, Expert, Return;
     public static JToggleButton soundButton;
-    public JLabel pageTitle, soundLabel, bgimg;
+    public JLabel pageTitle, soundLabel, bgimg, label2;
     public static JLabel modeLabel;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
@@ -72,7 +72,7 @@ public class Options extends JFrame {
     Image img;
     {
         try {
-            img = ImageIO.read(getClass().getResource("Resources/noo.jpg"));
+            img = ImageIO.read(getClass().getResource("Resources/mute.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +81,7 @@ public class Options extends JFrame {
     Image img2;
     {
         try {
-            img2 = ImageIO.read(getClass().getResource("Resources/images.png"));
+            img2 = ImageIO.read(getClass().getResource("Resources/speaker.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,6 +110,9 @@ public class Options extends JFrame {
         
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
+
+        label2 = new JLabel("© A product of JUSS Games Inc.");
+        label2.setBounds(650, 880, 200, 50);
 
         pageTitle = new JLabel("Options");
         pageTitle.setBounds(550, 100, 400, 70);
@@ -160,7 +163,7 @@ public class Options extends JFrame {
         Beginner.setBounds(100, 300, 250, 50);
         Intermediate.setBounds(100, 360, 250, 50);
         Expert.setBounds(100, 420, 250, 50);
-        Return.setBounds(1250, 860, 250, 50);
+        Return.setBounds(1250, 860, 200, 50);
         Return.setBackground(BACKGROUND_COLOUR);
         Return.setBorder(new EmptyBorder(0,0,0,0));
         soundButton.setBounds(700, 300, 150, 150);
@@ -177,6 +180,9 @@ public class Options extends JFrame {
         Expert.setFont(FONT_BUTTONS);
         Return.setFont(new Font("Comic Sans", Font.BOLD, 30));
         soundButton.setFont(FONT_BUTTONS);
+        soundButton.setContentAreaFilled(false);
+        soundButton.setFocusPainted(false);
+        soundButton.setBorderPainted(false);
 
         Return.addActionListener(new ActionListener()
         {
@@ -219,23 +225,37 @@ public class Options extends JFrame {
         soundButton.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED && clip.isRunning()) {
+                if (e.getStateChange() == ItemEvent.SELECTED && clip.isRunning() && Play.frame != null) {
                     soundButton.setIcon(new ImageIcon(img2));
                     Play.sound.setSelected(true);
                 } 
-                else if (e.getStateChange() == ItemEvent.SELECTED && !clip.isRunning()) {
+                else if (e.getStateChange() == ItemEvent.SELECTED && clip.isRunning() && Play.frame == null) {
                     soundButton.setIcon(new ImageIcon(img2));
-                    //Play.sound.setSelected(true);
+                }
+                else if (e.getStateChange() == ItemEvent.SELECTED && !clip.isRunning() && Play.frame != null) {
+                    soundButton.setIcon(new ImageIcon(img2));
+                    Play.sound.setSelected(true);
+                    playSound();
+                } 
+                else if (e.getStateChange() == ItemEvent.SELECTED && !clip.isRunning() && Play.frame == null) {
+                    soundButton.setIcon(new ImageIcon(img2));
                     playSound();
                 }
-                else if (e.getStateChange() == ItemEvent.DESELECTED && clip.isRunning()) {
+                else if (e.getStateChange() == ItemEvent.DESELECTED && clip.isRunning() && Play.frame != null) {
                     soundButton.setIcon(new ImageIcon(img));
                     Play.sound.setSelected(false);
                     stopSound();
-                } 
-                else if (e.getStateChange() == ItemEvent.DESELECTED && !clip.isRunning()) {
+                }
+                else if (e.getStateChange() == ItemEvent.DESELECTED && clip.isRunning() && Play.frame == null) {
+                    soundButton.setIcon(new ImageIcon(img));
+                    stopSound();
+                }
+                else if (e.getStateChange() == ItemEvent.DESELECTED && !clip.isRunning() && Play.frame != null) {
                     soundButton.setIcon(new ImageIcon(img));
                     Play.sound.setSelected(false);
+                }
+                else if (e.getStateChange() == ItemEvent.DESELECTED && !clip.isRunning() && Play.frame == null) {
+                    soundButton.setIcon(new ImageIcon(img));
                 }
             }
         });
@@ -243,6 +263,7 @@ public class Options extends JFrame {
         
         frame.setJMenuBar(menubar);
         frame.add(pageTitle);
+        bgimg.add(label2);
         bgimg.add(Beginner);
         bgimg.add(Intermediate);
         bgimg.add(Expert);

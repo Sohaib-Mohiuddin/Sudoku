@@ -10,20 +10,23 @@
  * This class is the Help page where instructions on how to play the game are shown to the user.
  */
 
- //imports for Help.java to work
+//imports for Help.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Help extends JFrame {
 
     public JFrame frame;
     public JButton returnButton, button6;
-    public JLabel pageTitle, line1, line2, line3, line4, line5, line6, bgimg;
+    public JLabel pageTitle, line1, line2, line3, line4, line5, line6, bgimg, label2;
     public JMenuBar menubar;
     public JMenu menu_file, submenu;
     public JMenuItem item_home, item_quit;
@@ -54,6 +57,9 @@ public class Help extends JFrame {
 
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
+
+        label2 = new JLabel("© A product of JUSS Games Inc.");
+        label2.setBounds(650, 880, 200, 50);
 
         menubar = new JMenuBar();
         menu_file = new JMenu("File");
@@ -90,6 +96,9 @@ public class Help extends JFrame {
         pageTitle = new JLabel("How to Play");
         pageTitle.setFont(TITLE_FONTS);
         pageTitle.setBounds(550, 100, 400, 70);
+        Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        pageTitle.setFont(TITLE_FONTS.deriveFont(attributes));
 
         returnButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -118,6 +127,7 @@ public class Help extends JFrame {
         frame.setJMenuBar(menubar);
         bgimg.add(returnButton);
         frame.add(pageTitle);
+        bgimg.add(label2);
         bgimg.add(line1); 
         bgimg.add(line2); 
         bgimg.add(line3); 
