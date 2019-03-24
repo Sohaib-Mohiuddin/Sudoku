@@ -1,18 +1,17 @@
 /**
- * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Author: Sohaib Mohiuddin
  * Course: Principles of Software and Requirements (Winter 2019)
  * Due Date: March 27, 2019
- * Version 1
+ * Test Case
  * Github Link: https://github.com/sm131/Sudoku
  * 
  * 
  * Play.java 
- * This class is the play page where the sudoku game occurs. The user is shown how many remaining boxes are there to fill, a highscore 
- * list for when the game is finished, a timer for the user to know how long the game has been going on for, [a number panel to drag
- * values into the sudoku board(IN PROGRESS)] and buttons for music, hints, help and return to main menu. 
+ * This Test Case is to test whether the user can select different difficulties and have those difficulties reflect
+ * on the sudoku board 
  */
 
- //imports for Play.java to work
+ // IMPORTS FOR Play.java TO WORK
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.TextAttribute;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
+// CREATING THE CLASS THAT EXTENDS JFRAME
 public class Play extends JFrame {
 
     public static JFrame frame;
@@ -46,8 +46,13 @@ public class Play extends JFrame {
     public JMenu menu_file, submenu;
     public JMenuItem save, item_options, item_quit;
 
+    // FINAL VARIABLE FOR GRID SIZE
     public static final int GRID_SIZE = 9;
+    
+    // FINAL VARIABLE FOR THE SUBGRID SIZE
     public static final int SUBGRID_SIZE = 3;
+
+    //FINAL VARIABLE FOR EACH CELL SIZE IN THE GRID
     public static final int CELL_SIZE = 60;
 
     public static final Color RIGHT_ANSWER = Color.GREEN;
@@ -75,7 +80,7 @@ public class Play extends JFrame {
 
     public File file = new File("savefile.txt");
 
-    //Getting the background image for the JFrame from the Resources folder
+     // GETTING THE BACKGROUND IMAGE FOR THE JFRAME FROM THE RESOURCES FOLDER
     Image Background;
     {
         try {
@@ -88,8 +93,14 @@ public class Play extends JFrame {
     Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
     ImageIcon BGIMG = new ImageIcon(Background_image);
 
+    /**
+     * CREATING THE CONSTRUCTOR THAT INITIATES THE JFRAME AND ALL COMPONENTS CONTAINED IN THE JFRAME
+     * 
+     * @param gmode
+     */
     public Play(int gmode) {
 
+        // CREATING THE NEW FRAME THAT HAS A SET SIZE, TITLE, CLOSEOPERATION, AND LAYOUT
         frame = new JFrame();
         frame.setSize(1500, 1000);
         frame.setTitle("Play");
@@ -97,15 +108,19 @@ public class Play extends JFrame {
         frame.setLayout(null);
         frame.setResizable(false);
         
-
+        // CREATING A LABEL FOR THE BACKGROUND IMAGE TO BE PUT IN
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
 
+        // A COPYRIGHT LABEL BECAUSE WHY NOT
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
 
+        // INITIATING GAMEMODE TO 0
         gamemode = 0;
         this.gamemode = gmode;
+
+        // SETTING THE VARIABLE MASK AS THE METHOD maskGenerator()
         mask = maskGenerator();
 
         menubar = new JMenuBar();
@@ -116,6 +131,7 @@ public class Play extends JFrame {
         item_options.setFont(FONT_NUMBERS);
         item_quit.setFont(FONT_NUMBERS);
         
+        // ACTIONLISTENER FOR THE MENU ITEM QUIT
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
@@ -125,6 +141,7 @@ public class Play extends JFrame {
                 }
             }
         });
+        // ACTIONLISTENER FOR THE MENU ITEM Options
         item_options.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 
@@ -138,6 +155,7 @@ public class Play extends JFrame {
         menu_file.add(item_options); menu_file.add(item_quit);
         menubar.add(menu_file);
 
+        // SETTING THE TITLE OF THE FRAME 
         title_play = new JLabel("Sudoku-sama");
         title_play.setBounds(610, 100, 340, 70);
         title_play.setFont(TITLE_FONTS);
@@ -145,20 +163,21 @@ public class Play extends JFrame {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title_play.setFont(TITLE_FONTS.deriveFont(attributes));
 
-
+        // CREATING THE PANEL THAT WILL CONTAIN THE SUDOKU BOARD
         panel1 = new JPanel();
         panel1.setBackground(Color.PINK);
         panel1.setLayout(new GridLayout(GRID_SIZE, GRID_SIZE));
         panel1.setBounds(430, 180, CELL_SIZE*GRID_SIZE+100, CELL_SIZE*GRID_SIZE+100);
         panel1.setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.black));
 
+        // CREATING AN ABSTRACTACTION FOR THE TEXTFIELDS WHERE THE USER WILL INPUT THE NUMBER
         Action action = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int rowPicked = -1;
                 int colPicked = -1;
 
-                //Source of the action
+                // SOURCE OF THE ACTION IN THE JTEXTFIELD
                 JTextField source = (JTextField)e.getSource();
 
                 boolean found = false;
@@ -167,11 +186,12 @@ public class Play extends JFrame {
                         if (cells[row][col] == source) {
                             rowPicked = row;
                             colPicked = col;
-                            found = true;  //Leaves the loop when found
+                            found = true;  // IF THE SOURCE IS FOUND, THE LOOP IS LEFT
                         }
                     }
                 }
 
+                // NESTED IF STATEMENT TO SET THE BACKGROUND COLOUR OF THE CELLS ONCE ANOTHER CELL IS SELECTED
                 if (previousRowPicked != -1 && previousColPicked != -1) {
                     if(mask[previousRowPicked][previousColPicked]) {
                         cells[previousRowPicked][previousColPicked].setBackground(UNCLICKED_BOX);
@@ -180,6 +200,7 @@ public class Play extends JFrame {
                     }
                 }
 
+                // VARIABLE user_input PARSES THE STRING VALUE OF THE CELLS TO INTEGER
                 int user_input = Integer.parseInt(cells[rowPicked][colPicked].getText());
                 
                     if (user_input == puzzle[rowPicked][colPicked]) {
@@ -197,15 +218,17 @@ public class Play extends JFrame {
             }
         };
 
+        // NESTED FOR LOOP TO CREATE THE JTEXTFIELDS FOR THE SUDOKU BOARD
         for (int i = 0; i < GRID_SIZE; ++i) {
             for (int j = 0; j < GRID_SIZE; ++j) {
 
                 cells[i][j] = new JTextField();
                 cells[i][j].setBorder(BorderFactory.createLineBorder(Color.black));
+                // ADDING THE ACTION TO EACH CELL FROM THE ABSTRACTACTION
                 cells[i][j].addActionListener(action);
                 cells[i][j].addKeyListener(keyListener);
                 
-
+                // IF STATEMENT TO SET THE BORDERS FOR THE SUBGRIDS
                 if (i % 3 == 0 && i != 0){
 					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Color.black));
 				}
@@ -216,17 +239,20 @@ public class Play extends JFrame {
 					cells[i][j].setBorder(BorderFactory.createMatteBorder(4, 4, 1, 1, Color.black));
                 }
                 
+                // ADDING EACH CELL TO THE PANEL 
                 panel1.add(cells[i][j]);
 
+                // IF STATEMENT THAT SETS THE CELLS AS TRUE OR FALSE FOR IF VALUES ARE ALREADY AVAILABLE ON THE SUDOKU BOARD
                 if (mask[i][j]) {
                     cells[i][j].setText("");
                     cells[i][j].setEditable(true);
                     cells[i][j].setBackground(CLICKED_BOX);
-                    //cells[i][j].setForeground(new Color(0, 0, 153));
                     cells[i][j].setForeground(new Color(0, 0, 0));
                     
                  } else {
                     
+                    // FOR LOOP THAT SETS THE TEXT OF THE VALUES THAT ARE SHOWN TO THE USER AND SETS EDITABLE TO FALSE SO THE VALUE
+                    // CANNOT BE CHANGED
                     for (int x = 0; x < GRID_SIZE; x++) {
                         for (int y = 0; y < GRID_SIZE; y++) {
                             cells[i][j].setText(puzzle[i][j] + "");
@@ -237,35 +263,37 @@ public class Play extends JFrame {
                     cells[i][j].setForeground(new Color(0, 0, 153));
                  }
 
-                 // Beautify all the cells
+                 // ALIGNS ALL VALUES TO THE CENTER OF THE JTEXTFIELD FOR AESTHETICS
                  cells[i][j].setHorizontalAlignment(JTextField.CENTER);
                  cells[i][j].setFont(FONT_NUMBERS);
                  
             }
         }
 
+        // ADDING ALL COMPONENTS TO THE FRAME AND BACKGROUND LABEL
         frame.getContentPane().add(title_play);
         frame.setJMenuBar(menubar);
-        //bgimg.add(return_button);
-        //bgimg.add(help);
         bgimg.add(label2);
-        //bgimg.add(hint);
-        //bgimg.add(sound);
-        //bgimg.add(remainingCells);
-        //bgimg.add(finalscore_label);
-        //bgimg.add(scroller);
         bgimg.add(panel1);
-        //bgimg.add(num_panel);
-        //bgimg.add(timer1);
         frame.add(bgimg);
 
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
+    // METHOD THAT CREATED THE MASK FOR THE SUDOKU BOARD
     public boolean[][] maskGenerator() {
         Random random = new Random();
         boolean[][] cover = new boolean[GRID_SIZE][GRID_SIZE];
+
+        /**
+         * SWITCH CASE FOR THE SELECTED GAMEMODE
+         * case 1: gamemode = 2 --> Beginner
+         * case 2: gamemode = 3 --> Intermediate
+         * case 3: gamemode = 4 --> Expert
+         * 
+         * gamemode CORRESPONDS TO THE RANDOM VALUE 
+         */
         switch(gamemode) {
             case 1:
             gamemode = 2;
@@ -279,6 +307,10 @@ public class Play extends JFrame {
             gamemode = 4;
             break;
         }
+        /**
+         * NESTED FOR LOOP THAT GENERATES RANDOM NUMBERS LESS THAN 
+         * AND EQUAL TO THE GAMEMODE SELECTED
+         */
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 int randomnum = random.nextInt(5) + 1;
@@ -296,6 +328,10 @@ public class Play extends JFrame {
         b = true;
     }
 
+    /**
+     * A KEYLISTENER THAT LISTENS TO THE SOURCE AND LIMITS THE AMOUNT OF NUMBERS ENTERED IN EACH TEXTFIELD AND 
+     * ALSO DOES NOT ALLOW CHARACTERS SUCH AS (A-Z) TO BE ENTERED IN THE TEXTFIELDS
+     */
     KeyListener keyListener = new KeyListener() {
         public void keyPressed(KeyEvent keyEvent) {
         }
@@ -310,7 +346,7 @@ public class Play extends JFrame {
             int rowPicked = -1;
             int colPicked = -1;
 
-            //Source of the action
+            // SOURCE OF THE ACTION
             JTextField source = (JTextField)keyEvent.getSource();
 
             boolean found = false;
@@ -319,12 +355,13 @@ public class Play extends JFrame {
                     if (cells[row][col] == source) {
                         rowPicked = row;
                         colPicked = col;
-                        found = true;  //Leaves the loop when found
+                        found = true;  // IF THE SOURCE IS FOUND, THE LOOP IS LEFT
                     }
                 }
             }
             char c = keyEvent.getKeyChar();
-            if (cells[rowPicked][colPicked].getText().length() >= 1 || Character.isAlphabetic(c)) // limit textField to 1 character
+            // LIMIT TEXTFIELD TO ONE NUMBER AND NO LETTER CHARACTERS
+            if (cells[rowPicked][colPicked].getText().length() >= 1 || Character.isAlphabetic(c))
                 keyEvent.consume();
         }
     };

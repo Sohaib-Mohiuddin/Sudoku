@@ -1,43 +1,66 @@
 
-
+/**
+ * Author: Sohaib Mohiuddin
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Test Case 3
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * gameGenerator.java 
+ * This class generates the numbers for the sudoku board which will be entered by the user and checked with this class 
+ * to see if the numbers match
+ */
 import java.lang.*;
 
 public class gameGenerator {
     int[][] puzzle;
 
-    // Constructor
+    // THE CONSTRUCTOR THAT INITIATES THE FRAME AND EVERYTHING IN THE FRAME
     gameGenerator(){
         puzzle = new int[9][9];
     }
 
-    // Sudoku Generator
+    // THE SUDOKU GENERATOR
     public void fillValues(){
-        // Fill the diagonal of 3 x 3 matrix
+        // CALLS THE METHOD THAT FILLS THE DIAGONAL 3x3 SUBGRID
         fillDiagonal();
 
-        // Fill remaining blocks
+        // CALLS THE METHOD THAT FILLS THE REMAINING CELLS
         fillRemaining(0, 3);
     }
 
-    // Fill the diagonal of the 3 x 3 matrix
+    // THE METHOD THAT FILLS THE DIAGONAL 3x3 SUBGRID
     void fillDiagonal(){
 
         for (int i = 0; i<9; i=i+3)
-            // for diagonal box, start coordinates->i==j
+            // FOR THE DIAGONAL BOX, START THE COORDINATES AT i==j
             fillBox(i, i);
     }
 
-    // Returns false if given 3 x 3 block contains num.
+    /**
+     * RETURNS FALSE IF THE GIVEN 3x3 SUBGRID CONTAINS NUM (A NUMBER)
+     * 
+     * @param rowStart
+     * @param colStart
+     * @param num
+     * @return
+     */
     boolean unUsedInBox(int rowStart, int colStart, int num){
+        // THIS NESTED FOR LOOP GOES THROUGH THE SUBGRIDS ITERATIVELY (ONE BY ONE - LINEARLY)
         for (int i = 0; i<3; i++)
             for (int j = 0; j<3; j++)
                 if (puzzle[rowStart+i][colStart+j]==num)
                     return false;
-
         return true;
     }
 
-    // Fill a 3 x 3 matrix.
+    /**
+     * METHOD THAT FILLS A 3x3 SUBGRID 
+     * 
+     * @param row
+     * @param col
+     */
     void fillBox(int row,int col){
         int num;
         for (int i=0; i<3; i++){
@@ -52,19 +75,32 @@ public class gameGenerator {
         }
     }
 
-    // Random generator
+    // THIS METHOD GENERATES RANDOM NUMBERS BETWEEN 1 AND 9 INCLUSIVE
     int randomGenerator(){
         return (int) Math.floor((Math.random()*9+1));
     }
 
-    // Check if safe to put in cell
+    /**
+     * THIS METHOD CHECKS TO SEE IF IT IS SAFE TO INPUT A VALUE IN THE GIVEN CELL
+     * 
+     * @param i
+     * @param j
+     * @param num
+     * @return
+     */
     boolean CheckIfSafe(int i,int j,int num){
         return (unUsedInRow(i, num) &&
                 unUsedInCol(j, num) &&
                 unUsedInBox(i-i%3, j-j%3, num));
     }
 
-    // check in the row for existence
+    /**
+     * THIS METHOD CHECKS TO SEE IF THERE IS ALREADY A VALUE OR NOT IN THE ROW
+     * 
+     * @param i
+     * @param num
+     * @return
+     */
     boolean unUsedInRow(int i,int num){
         for (int j = 0; j<9; j++)
             if (puzzle[i][j] == num)
@@ -72,7 +108,13 @@ public class gameGenerator {
         return true;
     }
 
-    // check in the row for existence
+    /**
+     * THIS METHOD CHECKS TO SEE IF THERE IS ALREADY A VALUE OR NOT IN THE COLUMN
+     * 
+     * @param j
+     * @param num
+     * @return
+     */
     boolean unUsedInCol(int j,int num){
         for (int i = 0; i<9; i++)
             if (puzzle[i][j] == num)
@@ -80,10 +122,14 @@ public class gameGenerator {
         return true;
     }
 
-    // A recursive function to fill remaining 
-    // puzzlerix
+    /**
+     * THIS METHOD IS A RECURSIVE FUNCTION THAT FILLS THE REMAINING CELLS
+     * 
+     * @param i
+     * @param j
+     * @return
+     */
     boolean fillRemaining(int i, int j){
-        // System.out.println(i+" "+j);
         if (j>=9 && i<8){
             i = i + 1;
             j = 0;
@@ -118,13 +164,19 @@ public class gameGenerator {
         return false;
     }
     
+    /**
+     * THIS METHOD CALLS THE fillValues() METHOD AND FILLS THE SUDOKU BOARD WITH VALUES (HIDDEN UNLESS Play.java  
+     * DECIDES WHICH VALUES SHOULD BE SHOWN TO THE USER)
+     * 
+     * @return puzzle
+     */
     public int[][] getPuzzle(){
         fillValues();
         return puzzle;
     }
     
 
-    // Print sudoku
+    // THIS METHOD PRINTS THE VALUES FOR THE ENTIRE SUDOKU BOARD
     public void printSudoku(){
         for (int i = 0; i<9; i++){
             for (int j = 0; j<9; j++)
@@ -134,7 +186,7 @@ public class gameGenerator {
         System.out.println();
     }
 
-    // Driver code
+    // MAIN METHOD TO CREATE gameGenerator THAT CALLS THE NECESSARY METHODS FOR THE SUDOKU BOARD VALUES
     public static void main(String[] args){
         gameGenerator sudoku = new gameGenerator();
         sudoku.fillValues();

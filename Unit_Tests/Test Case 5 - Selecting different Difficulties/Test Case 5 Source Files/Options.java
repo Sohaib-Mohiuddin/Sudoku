@@ -1,20 +1,19 @@
 /**
- * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Author: Sohaib Mohiuddin
  * Course: Principles of Software and Requirements (Winter 2019)
  * Due Date: March 27, 2019
- * Version 1
+ * Test Case 5
  * Github Link: https://github.com/sm131/Sudoku
  * 
  * 
  * Options.java 
- * This class is the options page where you have access to which difficulty you would like to play as well as the option to turn 
- * music on and off at user discretion
+ * This Test Case is to test whether the user can select different difficulties and have those difficulties reflect
+ * on the sudoku board 
  */
 
- //imports for Options.java to work
+ //IMPORTS FOR Options.java TO WORK
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -23,12 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.io.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
-
-//@SuppressWarnings("serial")
+// CREATING THE CLASS THAT EXTENDS JFRAME
 public class Options extends JFrame {
 
     public static JFrame frame;
@@ -43,9 +38,8 @@ public class Options extends JFrame {
     private int gamemodepicked;
     public int gmode;
 
+    // FINAL VARIABLE FOR GRID SIZE
     public static final int GRID_SIZE = 9;
-
-    //private boolean[][] mask = maskGenerator();
 
     public static final Color BACKGROUND_COLOUR = new Color(238, 200, 150);
 
@@ -54,7 +48,7 @@ public class Options extends JFrame {
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font SUBHEADING_FONTS = new Font("Comic Sans MS", Font.BOLD, 30);
 
-    //Getting the background image for the JFrame from the Resources folder
+    // GETTING THE BACKGROUND IMAGE FOR THE JFRAME FROM THE RESOURCES FOLDER
     Image Background;
     {
         try {
@@ -67,7 +61,10 @@ public class Options extends JFrame {
     Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
     ImageIcon BGIMG = new ImageIcon(Background_image);
 
+    // CREATING THE CONSTRUCTOR THAT INITIATES THE JFRAME AND ALL COMPONENTS CONTAINED IN THE JFRAME
     public Options() {
+
+        // CREATING THE NEW FRAME THAT HAS A SET SIZE, TITLE, CLOSEOPERATION, AND LAYOUT
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,12 +72,15 @@ public class Options extends JFrame {
         frame.setLayout(null);
         frame.setResizable(false);
         
+        // CREATING A LABEL FOR THE BACKGROUND IMAGE TO BE PUT IN
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
 
+        // A COPYRIGHT LABEL BECAUSE WHY NOT
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
 
+        // SETTING THE TITLE OF THE FRAME 
         pageTitle = new JLabel("Options");
         pageTitle.setBounds(550, 100, 400, 70);
         pageTitle.setFont(TITLE_FONTS);
@@ -96,6 +96,7 @@ public class Options extends JFrame {
         item_home.setFont(MENU_FONTS);
         item_quit.setFont(MENU_FONTS);
         
+        // ACTIONLISTENER FOR THE MENU ITEM QUIT
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
@@ -108,10 +109,12 @@ public class Options extends JFrame {
         menu_file.add(item_quit);
         menubar.add(menu_file);
 
+        // CREATING THE BUTTONS TO SELECT BEGINNER, INTERMEDIATE OR EXPERT
         Beginner = new JButton("Beginner (Kouhai)");
         Intermediate = new JButton("Intermediate (Senpai)");
         Expert = new JButton("Expert (Sensei)");
 
+        // LABEL FOR WHICH MODE TO SELECT
         modeLabel = new JLabel("Mode:");
         modeLabel.setFont(SUBHEADING_FONTS);
         modeLabel.setBounds(100, 200, 300, 120);
@@ -124,30 +127,36 @@ public class Options extends JFrame {
         Intermediate.setFont(FONT_BUTTONS);
         Expert.setFont(FONT_BUTTONS);
 
+        // ACTION LISTENER FOR WHEN Beginner BUTTON IS CLICKED
         Beginner.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
+                // gamemode IS SET TO 1 BEING THE EASIEST AND A NEW GAME IS STARTED WITH THAT GAMEMODE
                 gamemodepicked = 1;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
                 frame.setVisible(false);
             }
         });
+        // ACTION LISTENER FOR WHEN Intermediate BUTTON IS CLICKED
         Intermediate.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
+                // gamemode IS SET TO 2 BEING BETWEEN EASIEST AND HARDEST AND A NEW GAME IS STARTED WITH THAT GAMEMODE
                 gamemodepicked = 2;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
                 frame.setVisible(false);
             }
         });
+        // ACTION LISTENER FOR WHEN Expert BUTTON IS CLICKED
         Expert.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
+                // gamemode IS SET TO 3 BEING THE HARDEST AND A NEW GAME IS STARTED WITH THAT GAMEMODE
                 gamemodepicked = 3;
                 Play play = new Play(gamemodepicked);
                 play.maskGenerator();
@@ -155,7 +164,7 @@ public class Options extends JFrame {
             }
         });
 
-        
+        // ADDING ALL COMPONENTS TO THE FRAME AND BACKGROUND LABEL
         frame.setJMenuBar(menubar);
         frame.add(pageTitle);
         bgimg.add(label2);
@@ -170,6 +179,7 @@ public class Options extends JFrame {
         frame.setVisible(true);
     }
 
+    // MAIN METHOD THAT RUNS THE PROGRAM
     public static void main(String[] args) {
         new Options();
     }

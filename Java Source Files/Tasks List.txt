@@ -1,4 +1,4 @@
-CREATE JAR FILE COMMAND: jar cvfm Sudoku-sama.jar manifest.txt *.class
+CREATE JAR FILE COMMAND: jar cvfm Sudoku-sama.jar Manifest.txt *.class Resources/*
 
 - frame (IN PROGRESS)
     - grid layout null (TODO)(DONE)

@@ -10,7 +10,7 @@
  * This class is the Help page where instructions on how to play the game are shown to the user.
  */
 
-//imports for Help.java to work
+// THESE IMPORTS ARE REQUIRED FOR THE CODE TO RUN
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// CREATING THE CLASS THAT EXTENDS JFRAME
 public class Help extends JFrame {
 
     public JFrame frame;
@@ -35,7 +36,7 @@ public class Help extends JFrame {
     public static final Font FONT_HELP = new Font("Comic Sans MS", Font.BOLD, 20);
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
 
-    //Getting the background image for the JFrame from the Resources folder
+    // GETTING THE BACKGROUND IMAGE FOR THE JFRAME FROM THE RESOURCES FOLDER
     Image Background;
     {
         try {
@@ -47,7 +48,10 @@ public class Help extends JFrame {
     Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
     ImageIcon BGIMG = new ImageIcon(Background_image);
 
+    // CREATING THE CONSTRUCTOR THAT INITIATES THE JFRAME AND ALL COMPONENTS CONTAINED IN THE JFRAME
     public Help() {
+
+        // CREATING THE NEW FRAME THAT HAS A SET SIZE, TITLE, CLOSEOPERATION, AND LAYOUT
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));  
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,9 +59,11 @@ public class Help extends JFrame {
         frame.setLayout(null);
         frame.setResizable(false);
 
+        // CREATING A LABEL FOR THE BACKGROUND IMAGE TO BE PUT IN
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
 
+        // A COPYRIGHT LABEL BECAUSE WHY NOT
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
 
@@ -69,6 +75,7 @@ public class Help extends JFrame {
         item_home.setFont(FONT_HELP);
         item_quit.setFont(FONT_HELP);
 
+        // ACTIONLISTENER FOR THE MENU ITEM QUIT
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
@@ -78,6 +85,8 @@ public class Help extends JFrame {
                 }
             }
         });
+
+        // ACTIONLISTENER FOR THE MENU ITEM HOME
         item_home.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 Homepage homepage = new Homepage();
@@ -93,6 +102,7 @@ public class Help extends JFrame {
         returnButton.setBackground(BACKGROUND_COLOUR);
         returnButton.setBorder(new EmptyBorder(0,0,0,0));
 
+        // SETTING THE TITLE OF THE FRAME 
         pageTitle = new JLabel("How to Play");
         pageTitle.setFont(TITLE_FONTS);
         pageTitle.setBounds(550, 100, 400, 70);
@@ -124,6 +134,7 @@ public class Help extends JFrame {
         line1.setFont(FONT_HELP); line2.setFont(FONT_HELP); line3.setFont(FONT_HELP);
         line4.setFont(FONT_HELP); line5.setFont(FONT_HELP); line6.setFont(FONT_HELP);
 
+        // ADDING ALL COMPONENTS TO THE FRAME AND BACKGROUND LABEL
         frame.setJMenuBar(menubar);
         bgimg.add(returnButton);
         frame.add(pageTitle);
@@ -141,6 +152,7 @@ public class Help extends JFrame {
         frame.setLocationRelativeTo(null);
     }
 
+    // MAIN METHOD THAT RUNS THE PROGRAM
     public static void main(String[] args) {
         new Help();
         
