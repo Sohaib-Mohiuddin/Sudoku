@@ -1,9 +1,2 @@
-Umar:89
-Umar:100
-Jan:96
-Sailajan:100
-Sohaib:89
-Sailajan:100
-Jan:100
-Sohaib:100
-Sohaib:94
+
+sohaib:96

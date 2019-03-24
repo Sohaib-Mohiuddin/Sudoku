@@ -1,12 +1,28 @@
+/**
+ * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Course: Principles of Software and Requirements (Winter 2019)
+ * Due Date: March 27, 2019
+ * Version 1
+ * Github Link: https://github.com/sm131/Sudoku
+ * 
+ * 
+ * Homepage.java 
+ * This class is the homepage page where the user starts and have access to options, help and quit. 
+ */
 
+//imports for Homepage.java to work
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.BasicBorders;
 
-//@SuppressWarnings("serial")
 public class Homepage extends JFrame {
 
     public JFrame frame;
@@ -22,7 +38,9 @@ public class Homepage extends JFrame {
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
     public static final int GRID_SIZE = 9;
+    private int gamemodepicked;
 
+    //Getting the background image for the JFrame from the Resources folder
     Image Background;
     {
         try {
@@ -70,6 +88,11 @@ public class Homepage extends JFrame {
         help = new JButton("Help");
         quit = new JButton("Quit");
 
+        play.setBorder(new RoundedBorder(50));
+        options.setBorder(new RoundedBorder(50));
+        help.setBorder(new RoundedBorder(50));
+        quit.setBorder(new RoundedBorder(50));
+
         play.setBounds(560, 420, 200, 50);
         options.setBounds(560, 480, 200, 50);
         help.setBounds(770, 420, 200, 50);
@@ -81,8 +104,11 @@ public class Homepage extends JFrame {
         quit.setFont(FONT_BUTTONS);
 
         title = new JLabel("Welcome to Sudoku-sama");
-        title.setFont(new Font("Comic Sans", Font.BOLD, 30));
-        title.setBounds(580, 100, 400, 70);
+        title.setBounds(460, 100, 700, 70);
+        title.setFont(TITLE_FONTS);
+        Map<TextAttribute, Object> attributes = new HashMap<>(TITLE_FONTS.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        title.setFont(TITLE_FONTS.deriveFont(attributes));
 
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
@@ -90,7 +116,7 @@ public class Homepage extends JFrame {
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Help help = new Help();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
 
@@ -98,7 +124,7 @@ public class Homepage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Options options = new Options();
-                frame.dispose();
+                frame.setVisible(false);
             }
         });
         quit.addActionListener(new ActionListener()
@@ -115,9 +141,40 @@ public class Homepage extends JFrame {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Play play = new Play(1);
-                
-                frame.dispose();
+                /*String[] options = new String[] {"Beginner", "Intermediate", "Expert", "Cancel"};
+                int response = JOptionPane.showOptionDialog(null, "Which mode would you like to play on?", "Select Mode", 
+                                                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, 
+                                                            options, options[3]);
+                if (response == 0) {
+                    gamemodepicked = 1;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                } 
+                else if (response == 1) {
+                    gamemodepicked = 2;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                }
+                else if (response == 2) {
+                    gamemodepicked = 3;
+                    Play play = new Play(gamemodepicked);
+                    play.maskGenerator();
+                    frame.setVisible(false);
+                }*/
+                if (Options.frame == null) {
+                    new Options();
+                    frame.setVisible(false);
+                } else {
+                    Options.Beginner.setVisible(true);
+                    Options.Intermediate.setVisible(true);
+                    Options.Expert.setVisible(true);
+                    Options.modeLabel.setVisible(true);
+                    Options.frame.setVisible(true);
+                    Options.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setVisible(false);
+                }
             }
         });
 
@@ -139,5 +196,25 @@ public class Homepage extends JFrame {
         Homepage homepage = new Homepage();
     }
 
+    private static class RoundedBorder implements Border {
 
+        private int radius;
+
+        RoundedBorder(int radius) {
+            this.radius = radius;
+        }
+    
+        public Insets getBorderInsets(Component c) {
+            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+        }
+    
+        public boolean isBorderOpaque() {
+            return true;
+        }
+    
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+        }
+    }
 }
+
