@@ -1,8 +1,9 @@
+
 /**
- * Authors: Sohaib Mohiuddin, Umar Riaz, Jan O'Hanlon, Sailajan Sivalingam
+ * Author: Sohaib Mohiuddin
  * Course: Principles of Software and Requirements (Winter 2019)
  * Due Date: March 27, 2019
- * Version 1
+ * Test Case 5
  * Github Link: https://github.com/sm131/Sudoku
  * 
  * 
@@ -10,7 +11,6 @@
  * This class generates the numbers for the sudoku board which will be entered by the user and checked with this class 
  * to see if the numbers match
  */
-
 import java.lang.*;
 
 public class gameGenerator {

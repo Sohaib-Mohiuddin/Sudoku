@@ -10,7 +10,7 @@
  * This class is the homepage page where the user starts and have access to options, help and quit. 
  */
 
-//imports for Homepage.java to work
+// THESE IMPORTS ARE REQUIRED FOR THE CODE TO RUN
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +23,7 @@ import java.util.Random;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.BasicBorders;
 
+// CREATING THE CLASS THAT EXTENDS JFRAME
 public class Homepage extends JFrame {
 
     public JFrame frame;
@@ -37,10 +38,11 @@ public class Homepage extends JFrame {
     public static final Font TITLE_FONTS = new Font("Comic Sans MS", Font.BOLD, 50);
     public static final Font FONT_BUTTONS = new Font("Comic Sans MS", Font.BOLD, 20);
 
+    // FINAL VARIABLE FOR GRID SIZE
     public static final int GRID_SIZE = 9;
     private int gamemodepicked;
 
-    //Getting the background image for the JFrame from the Resources folder
+    // GETTING THE BACKGROUND IMAGE FOR THE JFRAME FROM THE RESOURCES FOLDER
     Image Background;
     {
         try {
@@ -53,7 +55,10 @@ public class Homepage extends JFrame {
     Image Background_image = Background.getScaledInstance(1500, 1000, Image.SCALE_DEFAULT);
     ImageIcon BGIMG = new ImageIcon(Background_image);
 
+    // CREATING THE CONSTRUCTOR THAT INITIATES THE JFRAME AND ALL COMPONENTS CONTAINED IN THE JFRAME
     public Homepage() {
+
+        // CREATING THE NEW FRAME THAT HAS A SET SIZE, TITLE, CLOSEOPERATION, AND LAYOUT
         frame = new JFrame();
         frame.setPreferredSize(new Dimension(1500, 1000));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,6 +66,7 @@ public class Homepage extends JFrame {
         frame.setLayout(null);
         frame.setResizable(false);
         
+        // CREATING A LABEL FOR THE BACKGROUND IMAGE TO BE PUT IN
         bgimg = new JLabel("", BGIMG, JLabel.CENTER);
         bgimg.setBounds(0, 0, 1500, 1000);
 
@@ -70,6 +76,7 @@ public class Homepage extends JFrame {
         menu_file.setFont(FONT_BUTTONS);
         item_quit.setFont(FONT_BUTTONS);
         
+        // ACTIONLISTENER FOR THE MENU ITEM QUIT
         item_quit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "Close?",  JOptionPane.YES_NO_OPTION);
@@ -83,6 +90,7 @@ public class Homepage extends JFrame {
         menu_file.add(item_quit);
         menubar.add(menu_file);
 
+        // CREATING THE BUTTONS FOR THE PAGE
         play = new JButton("Play");
         options = new JButton("Options");
         help = new JButton("Help");
@@ -103,6 +111,7 @@ public class Homepage extends JFrame {
         help.setFont(FONT_BUTTONS);
         quit.setFont(FONT_BUTTONS);
 
+        // SETTING THE TITLE OF THE FRAME 
         title = new JLabel("Welcome to Sudoku-sama");
         title.setBounds(460, 100, 700, 70);
         title.setFont(TITLE_FONTS);
@@ -110,9 +119,11 @@ public class Homepage extends JFrame {
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         title.setFont(TITLE_FONTS.deriveFont(attributes));
 
+        // A COPYRIGHT LABEL BECAUSE WHY NOT
         label2 = new JLabel("© A product of JUSS Games Inc.");
         label2.setBounds(650, 880, 200, 50);
 
+        // ACTIONLISTENER FOR THE HELP BUTTON
         help.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Help help = new Help();
@@ -120,6 +131,7 @@ public class Homepage extends JFrame {
             }
         });
 
+        // ACTIONLISTENER FOR THE OPTIONS BUTTON
         options.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -127,6 +139,8 @@ public class Homepage extends JFrame {
                 frame.setVisible(false);
             }
         });
+
+        // ACTIONLISTENER FOR THE QUIT BUTTON
         quit.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
@@ -138,31 +152,11 @@ public class Homepage extends JFrame {
                 }
             }
         });
+
+        // ACTIONLISTENER FOR THE PLAY BUTTON
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*String[] options = new String[] {"Beginner", "Intermediate", "Expert", "Cancel"};
-                int response = JOptionPane.showOptionDialog(null, "Which mode would you like to play on?", "Select Mode", 
-                                                            JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, 
-                                                            options, options[3]);
-                if (response == 0) {
-                    gamemodepicked = 1;
-                    Play play = new Play(gamemodepicked);
-                    play.maskGenerator();
-                    frame.setVisible(false);
-                } 
-                else if (response == 1) {
-                    gamemodepicked = 2;
-                    Play play = new Play(gamemodepicked);
-                    play.maskGenerator();
-                    frame.setVisible(false);
-                }
-                else if (response == 2) {
-                    gamemodepicked = 3;
-                    Play play = new Play(gamemodepicked);
-                    play.maskGenerator();
-                    frame.setVisible(false);
-                }*/
                 if (Options.frame == null) {
                     new Options();
                     frame.setVisible(false);
@@ -178,6 +172,7 @@ public class Homepage extends JFrame {
             }
         });
 
+        // ADDING ALL COMPONENTS TO THE FRAME AND BACKGROUND LABEL
         frame.setJMenuBar(menubar);
         bgimg.add(play);
         bgimg.add(options);
@@ -192,10 +187,12 @@ public class Homepage extends JFrame {
         frame.setVisible(true);
     }
 
+    // MAIN METHOD THAT RUNS THE PROGRAM
     public static void main(String[] args) {
         Homepage homepage = new Homepage();
     }
 
+    // CLASS THAT CREATES ROUNDED BORDERS FOR ANY COMPONENT IT IS ASSOCIATED WITH
     private static class RoundedBorder implements Border {
 
         private int radius;
