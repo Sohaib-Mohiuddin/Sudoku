@@ -118,7 +118,7 @@ public class Play extends JFrame {
     Image Background;
     {
         try {
-            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -301,6 +301,7 @@ public class Play extends JFrame {
         // LABEL TO DISPLAY THE AMOUNT OF REMAINING CELLS LEFT TO FILL ON THE BOARD
         remainingCells = new JLabel("", JLabel.CENTER);
         remainingCells.setBounds(870,150,300,40);
+        remainingCells.setForeground(Color.white);
         remainingCells.setFont(BUTTON_FONTS);
         remainingCells.setText("Remaining boxes: --");
 

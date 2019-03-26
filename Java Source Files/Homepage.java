@@ -46,7 +46,7 @@ public class Homepage extends JFrame {
     Image Background;
     {
         try {
-            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

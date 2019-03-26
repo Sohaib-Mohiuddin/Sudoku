@@ -40,7 +40,7 @@ public class Help extends JFrame {
     Image Background;
     {
         try {
-            Background = ImageIO.read(getClass().getResource("Resources/background_image.png"));
+            Background = ImageIO.read(getClass().getResource("Resources/background_image.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -131,6 +131,12 @@ public class Help extends JFrame {
         line5.setBounds(400,370,800,60);
         line6.setBounds(400,410,800,60);
 
+        line1.setForeground(Color.white);
+        line2.setForeground(Color.white);
+        line3.setForeground(Color.white);
+        line4.setForeground(Color.white);
+        line5.setForeground(Color.white);
+        line6.setForeground(Color.white);
         line1.setFont(FONT_HELP); line2.setFont(FONT_HELP); line3.setFont(FONT_HELP);
         line4.setFont(FONT_HELP); line5.setFont(FONT_HELP); line6.setFont(FONT_HELP);
 
